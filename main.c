@@ -18,6 +18,11 @@
  * 水仙花数是指一个3位数,它的每个位上的数字的3次幂之和等于它本身（例如：1^3 + 5^3+ 3^3 = 153）。
  * 答案：153,370,371,407
  */
+/**
+ * 水仙花数判断
+ * @param x 需要判断的数字
+ * @return bool型：是 true，否 false
+ */
 bool isNarcissistic(const int x) {
     int sum = 0, temp = x;
     while (temp) {
@@ -47,6 +52,12 @@ void testIsNarcissistic() {
  * 八位自幂数：八仙数 (24678050,24678051,8859347)
  * 九位自幂数：九九重阳数 (146511208,472335975,534494836,912985153)
  * 十位自幂数：十全十美数 (4679307774)
+ */
+/**
+ * 自幂数判断
+ * @param x 需要判断的数字
+ * @param n 数字位数
+ * @return bool型：是 true，否 false
  */
 bool isSelfPower(const long long x, int n) {
 
@@ -86,6 +97,11 @@ void testIsSelfPower() {
  * 假如兔子都不死，问每个月的兔子总数为多少？
  * 兔子的规律为数列：0、1、1、2、3、5、8、13、21、34、........。
 */
+/**
+ * 计算斐波那契数列中的值
+ * @param n 数列中的位序
+ * @return 数列中的第n个值
+ */
 long long fibonacci(int n) {
     if (n <= 0 || n > 93) { //第93个数值long long会溢出
         return NAN;
@@ -95,6 +111,7 @@ long long fibonacci(int n) {
     static long long result[100] = {0L, 1L, 1L};
     static int i = 3;
     for (; i < n; ++i) {
+        //a[n]=a[n-1]+a[n-2]
         result[i] = result[i - 1] + result[i - 2];
     }
 
@@ -106,6 +123,44 @@ void testFibonacci() {
         printf("%lld\n", fibonacci(j));
     }
 }
+
+/*
+ * 3、【题目】猴子吃桃问题
+ * 猴子吃桃问题：猴子第一天吃了若干个桃子，当即吃了一半，还不解馋，又多吃了一个；
+ * 第二天，吃剩下的桃子的一半，还不过瘾，又多吃了一个；以后每天都吃前一天剩下的一半多一个，
+ * 到第10天想再吃时，只剩下一个桃子了。问第一天共吃了多少个桃子？
+ * Day10------------------------1
+ * Day9-------------------------4
+ * Day8-------------------------10
+ * Day7-------------------------22
+ * Day6-------------------------46
+ * Day5-------------------------94
+ * Day4-------------------------190
+ * Day3-------------------------382
+ * Day2-------------------------766
+ * Day1-------------------------1534
+ */
+/**
+ * 计算猴子吃桃问题开始一共多少桃子
+ * @param n 吃到只剩一个桃子需要的天数
+ * @return 开始的桃子数
+ */
+int monkeyEatPeach(int n){
+
+    if (n<=1){
+        return 1;
+    } else{
+        //a[n-1]=a[n]/2-1   ==>     a[n]=(a[n-1]+1)*2
+        return (monkeyEatPeach(n-1)+1)*2;
+    }
+}
+
+void testMonkeyEatPeach(){
+    for (int i = 1; i <= 10; ++i) {
+        printf("%d\n",monkeyEatPeach(i));
+    }
+}
+
 
 
 int main() {
@@ -144,7 +199,8 @@ int main() {
     //sleep(1);
     //testIsNarcissistic();
     //testIsSelfPower();
-    testFibonacci();
+    //testFibonacci();
+    testMonkeyEatPeach();
 
     gettimeofday(&end, 0);
     double timeuse = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;    //微秒数
