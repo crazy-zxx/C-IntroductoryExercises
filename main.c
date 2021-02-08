@@ -92,30 +92,30 @@ void testIsSelfPower() {
 
 /* 2、【题目】斐波那契数列
  * 古典问题：斐波那契数列（Fibonacci sequence），又称黄金分割数列,
- * 因数学家莱昂纳多·斐波那契（Leonardoda Fibonacci）以兔子繁殖为例子而引入，故又称为“兔子数列”。
+ * 因数学家莱昂纳多·斐波那契（Leonardo Fibonacci）以兔子繁殖为例子而引入，故又称为“兔子数列”。
  * 有一对兔子，从出生后第3个月起每个月都生一对兔子，小兔子长到第三个月后每个月又生一对兔子，
  * 假如兔子都不死，问每个月的兔子总数为多少？
  * 兔子的规律为数列：0、1、1、2、3、5、8、13、21、34、........。
 */
 /**
  * 计算斐波那契数列中的值
- * @param n 数列中的位序
+ * @param index 数列中的位序
  * @return 数列中的第n个值
  */
-long long fibonacci(int n) {
-    if (n <= 0 || n > 93) { //第93个数值long long会溢出
+long long fibonacci(int index) {
+    if (index <= 0 || index > 93) { //第93个数值long long会溢出
         return NAN;
     }
 
     //static减少非必要的重复计算（重复查询时），只依次往后计算到目标值，并保存已经计算出的值
     static long long result[100] = {0L, 1L, 1L};
     static int i = 3;
-    for (; i < n; ++i) {
-        //a[n]=a[n-1]+a[n-2]
+    for (; i < index; ++i) {
+        //a[index]=a[index-1]+a[index-2]
         result[i] = result[i - 1] + result[i - 2];
     }
 
-    return result[n - 1];
+    return result[index - 1];
 }
 
 void testFibonacci() {
@@ -142,26 +142,52 @@ void testFibonacci() {
  */
 /**
  * 计算猴子吃桃问题开始一共多少桃子
- * @param n 吃到只剩一个桃子需要的天数
+ * @param day 吃到只剩一个桃子需要的天数
  * @return 开始的桃子数
  */
-int monkeyEatPeach(int n){
+int monkeyEatPeach(const int day) {
 
-    if (n<=1){
+    if (day <= 1) {
         return 1;
-    } else{
-        //a[n-1]=a[n]/2-1   ==>     a[n]=(a[n-1]+1)*2
-        return (monkeyEatPeach(n-1)+1)*2;
+    } else {
+        //a[day-1]=a[day]/2-1   ==>     a[day]=(a[day-1]+1)*2
+        return (monkeyEatPeach(day - 1) + 1) * 2;
     }
 }
 
-void testMonkeyEatPeach(){
+void testMonkeyEatPeach() {
     for (int i = 1; i <= 10; ++i) {
-        printf("%d\n",monkeyEatPeach(i));
+        printf("%d\n", monkeyEatPeach(i));
     }
 }
 
+/*
+ * 4、【题目】物体自由落地
+ * 一球从100米高度自由落下，每次落地后反跳回原高度的一半；
+ * 再落下，求它在第10次落地时，共经过多少米？第10次反弹多高？
+ */
+/**
+ * 计算自由落体从指定高度到第某次落地总弹跳距离和接下来的弹跳高度
+ * @param height 指定初始落体高度
+ * @param times 第几次落地
+ * @return （int [2]）{目前总弹跳距离，下次弹跳高度}
+ */
+long double *freeFall(const long double height, const int times) {
+    long double h = height, sum = 100.0;
+    int t = 2;
+    while (t++ <= times && h > 0.0) {
+        sum += h;
+        h /= 2.0;
+    }
+    return (long double [2]) {sum, h / 2.0};
+}
 
+void testFreeFall() {
+    for (int i = 1; i <= 30; ++i) {
+        long double *temp = freeFall(100.0, i);
+        printf("%d times sum:%Lf, %d bound height:%Lf\n", i, temp[0], i, temp[1]);
+    }
+}
 
 int main() {
 
@@ -200,7 +226,11 @@ int main() {
     //testIsNarcissistic();
     //testIsSelfPower();
     //testFibonacci();
-    testMonkeyEatPeach();
+    //testMonkeyEatPeach();
+    testFreeFall();
+
+
+
 
     gettimeofday(&end, 0);
     double timeuse = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;    //微秒数
