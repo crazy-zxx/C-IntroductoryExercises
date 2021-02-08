@@ -170,7 +170,7 @@ void testMonkeyEatPeach() {
  * 计算自由落体从指定高度到第某次落地总弹跳距离和接下来的弹跳高度
  * @param height 指定初始落体高度
  * @param times 第几次落地
- * @return （int [2]）{目前总弹跳距离，下次弹跳高度}
+ * @return （long double [2]）{目前总弹跳距离，下次弹跳高度}
  */
 long double *freeFall(const long double height, const int times) {
     long double h = height, sum = 100.0;
@@ -179,7 +179,7 @@ long double *freeFall(const long double height, const int times) {
         sum += h;
         h /= 2.0;
     }
-    return (long double [2]) {sum, h / 2.0};
+    return (long double[2]) {sum, h / 2.0};
 }
 
 void testFreeFall() {
@@ -188,6 +188,125 @@ void testFreeFall() {
         printf("%d times sum:%Lf, %d bound height:%Lf\n", i, temp[0], i, temp[1]);
     }
 }
+
+
+/*
+ * 5、【题目】矩阵对角线元素之和
+ * 求一个3*3矩阵对角线元素之和
+ */
+/**
+ * 计算矩阵（方阵）对角线元素和（使用了C99/C11的可选VLA特性）
+ * @param n 矩阵维数
+ * @param matrix 矩阵（二维数组存储）
+ * @return 对角线元素和
+ */
+int matrixDiagSum(const int n, const int matrix[][n]) {
+    int sum = 0;
+    for (int i = 0; i < n; ++i) {
+        sum += matrix[i][i];
+    }
+    return sum;
+}
+
+void testMatrixDiagSum() {
+    int matrix[3][3] = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9}
+    };
+    printf("%d\n", matrixDiagSum(3, matrix));
+}
+
+/*
+ * 6、【题目】求素数
+ * 判断101-200之间有多少个素数，并输出所有素数。
+ */
+/**
+ * 判断一个数是否为素数（平方根范围取余判断）
+ * @param x 待判断数字
+ * @return bool型：是 true，否 false
+ */
+bool isPrime(int x) {
+    if (x < 2) {
+        return false;
+    }
+
+    for (int i = 2; i <= sqrt(x); ++i) {
+        if (x % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * 统计指定范围内素数，并输出每个素数（ [x,y] ）
+ * @param x 起始范围
+ * @param y 终止范围
+ * @return 素数个数
+ */
+int countPrime(int x, int y) {
+    int count = 0;
+    for (int i = x; i <= y; ++i) {
+        if (isPrime(i)) {
+            printf("%d ", i);
+            count++;
+        }
+    }
+    return count;
+}
+
+void testCountPrime() {
+    printf("\n%d\n", countPrime(100, 200));
+}
+
+/*
+ * 扩展：埃氏筛法
+ */
+/**
+ * 埃氏筛法求素数
+ * @param result 接受素数结果的数组
+ * @param p 筛选素数的辅助数组
+ * @param n 范围上限（ (2，n] ）
+ * @param len 素数个数
+ */
+void sieve(int result[],bool p[],const int n, int * const restrict count) {
+    *count=0;   //初始素数个数为0
+    for (int i = 2; i <= n; ++i) {  //从2开始筛
+        if (!p[i]) {    //i为素数
+            result[(*count)++] = i;   //加入接受素数结果数组，素数个数加一
+            for (int j = i + i; j <= n; j += i) {   //筛掉i的倍数
+                p[j] = true;
+            }
+        }
+    }
+}
+
+void testSieve() {
+    const int max = 1024;   //数组大小
+    static int result[max] = {0};   //保存素数结果数组
+    static bool p[max] = {0};   //p[i]==false 则i为素数，反之非素数
+    int count = 0;  //素数个数
+
+    sieve(result,p,1, &count);
+    for (int i = 0; i < count; ++i) {
+        printf("%d ", result[i]);
+    }
+    printf("\n%d\n", count);
+
+    sieve(result,p,2, &count);
+    for (int i = 0; i < count; ++i) {
+        printf("%d ", result[i]);
+    }
+    printf("\n%d\n", count);
+
+    sieve(result,p,1000, &count);
+    for (int i = 0; i < count; ++i) {
+        printf("%d ", result[i]);
+    }
+    printf("\n%d\n", count);
+}
+
 
 int main() {
 
@@ -227,9 +346,10 @@ int main() {
     //testIsSelfPower();
     //testFibonacci();
     //testMonkeyEatPeach();
-    testFreeFall();
-
-
+    //testFreeFall();
+    //testMatrixDiagSum();
+    //testCountPrime();
+    testSieve();
 
 
     gettimeofday(&end, 0);
