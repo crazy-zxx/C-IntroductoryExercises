@@ -231,7 +231,8 @@ bool isPrime(int x) {
         return false;
     }
 
-    for (int i = 2; i <= sqrt(x); ++i) {
+    int sqrt_x = sqrt(x);
+    for (int i = 2; i <= sqrt_x; ++i) {
         if (x % i == 0) {
             return false;
         }
@@ -270,11 +271,11 @@ void testCountPrime() {
  * @param n 范围上限（ (2，n] ）
  * @param len 素数个数
  */
-void sieve(int result[],bool p[],const int n, int * const restrict count) {
-    *count=0;   //初始素数个数为0
+void sieve(int prime[], bool p[], const int n, int *const restrict count) {
+    *count = 0;   //初始素数个数为0
     for (int i = 2; i <= n; ++i) {  //从2开始筛
         if (!p[i]) {    //i为素数
-            result[(*count)++] = i;   //加入接受素数结果数组，素数个数加一
+            prime[(*count)++] = i;   //加入接受素数结果数组，素数个数加一
             for (int j = i + i; j <= n; j += i) {   //筛掉i的倍数
                 p[j] = true;
             }
@@ -283,30 +284,106 @@ void sieve(int result[],bool p[],const int n, int * const restrict count) {
 }
 
 void testSieve() {
-    const int max = 1024;   //数组大小
-    static int result[max] = {0};   //保存素数结果数组
+    const int max = 10240;   //数组大小
+    static int prime[max] = {0};   //保存素数结果数组
     static bool p[max] = {0};   //p[i]==false 则i为素数，反之非素数
     int count = 0;  //素数个数
 
-    sieve(result,p,1, &count);
+    sieve(prime, p, 1, &count);
     for (int i = 0; i < count; ++i) {
-        printf("%d ", result[i]);
+        printf("%d ", prime[i]);
     }
     printf("\n%d\n", count);
 
-    sieve(result,p,2, &count);
+    sieve(prime, p, 2, &count);
     for (int i = 0; i < count; ++i) {
-        printf("%d ", result[i]);
+        printf("%d ", prime[i]);
     }
     printf("\n%d\n", count);
 
-    sieve(result,p,1000, &count);
+    sieve(prime, p, 1000, &count);
     for (int i = 0; i < count; ++i) {
-        printf("%d ", result[i]);
+        printf("%d ", prime[i]);
     }
     printf("\n%d\n", count);
 }
 
+/*
+ * 7、【题目】分解质因数
+ * 将一个正整数分解质因数。
+ * 例如：输入90,打印出90=2*3*3*5。
+ */
+/**
+ * 分解质因数
+ * @param result 分解结果的质因子数组（第一列为 因子，第二列为 该因子个数）
+ * @param count 不同质因子个数（用来遍历质因子数组）
+ * @param prime 质数表
+ * @param n 待分解数字
+ */
+void primeFactors(int result[][2], int *restrict count, const int prime[], const int n) {
+
+    *count = 0;
+    int sqrt_n = sqrt(n);
+    int temp = n;
+
+    for (int i = 0; prime[i] <= sqrt_n; ++i) {  //遍历质数表，只需遍历到待分解数的平方根
+
+        if (temp % prime[i] == 0) { //可整除的某一质数
+            result[*count][0] = prime[i];
+            result[*count][1] = 0;
+            while (temp % prime[i] == 0) {//计数可整除的某同一质数个数
+                result[*count][1]++;
+                temp /= prime[i];
+            }
+            (*count)++; //该质数不可继续整除，质因子个数加一
+        }
+
+        if (temp == 1) {    //若已经分解到1，则分解结束
+            break;
+        }
+    }
+
+    //待分解数的开方值及之前的质数尚未将其分解完，则分解到最后(非1非自身)的数即是最后一个质因子
+    if (temp != 1 && temp!=n) {
+        result[*count][0] = temp;
+        result[*count][1] = 1;
+        (*count)++;
+    }
+
+}
+
+void testPrimeFactors() {
+    const int max = 10240;   //数组大小
+    static int prime[max] = {0};   //保存素数结果数组
+    static bool p[max] = {0};   //p[i]==false 则i为素数，反之非素数
+    int countP = 0, countF = 0;  //素数个数
+    int result[max][2] = {0};
+
+    sieve(prime, p, 100, &countP); //先获取质数表
+
+    for (int i = 1; i <= 100; ++i) {
+        primeFactors(result, &countF, prime, i);    //分解
+        if (countF > 0) {
+            printf("%d=", i);
+            for (int j = 0; j < countF; ++j) {
+                while (result[j][1]-- > 0) {
+                    printf("%d", result[j][0]);
+                    if (result[j][1] > 0) {
+                        printf("*");
+                    }
+                }
+                if (j < countF - 1) {
+                    printf("*");
+                }
+            }
+        } else {
+            printf("%d can't resolve!", i);
+        }
+        printf("\n");
+    }
+
+
+}
 
 int main() {
 
@@ -349,7 +426,8 @@ int main() {
     //testFreeFall();
     //testMatrixDiagSum();
     //testCountPrime();
-    testSieve();
+    //testSieve();
+    testPrimeFactors();
 
 
     gettimeofday(&end, 0);
