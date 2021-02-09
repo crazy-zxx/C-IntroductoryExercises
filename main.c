@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <math.h>
 #include <time.h>
+#include <ctype.h>
 //以下为Unix or Linux库
 #include <unistd.h>
 #include <sys/time.h>
@@ -800,6 +801,59 @@ void testPrintRhombus(){
     }
 }
 
+/*
+ * 16、【题目】输出国际象棋棋盘
+ */
+void printChessBoard(){
+    int a, b;
+    for (a = 1; a <= 8; a++) {
+        for (b = 1; b <= 8; b++){
+            if ((b + a) % 2 == 0){
+                printf("□");
+            }else{
+                printf("■");
+            }
+        }
+        printf("\n");
+    }
+}
+
+void testPrintChessBoard(){
+    printChessBoard();
+}
+
+/*
+ * 17、【题目】统计出字母_空格_数字_其它字符个数
+ * 输入一行字符，分别统计出字母、空格、数字和其它字符个。
+ */
+void calcCountOfStr(const char * restrict input){
+    int alpha_count=0,space_count=0,digit_count=0,other_count=0;
+    while (*input!='\n'){
+        if (isalpha(*input)){
+            alpha_count++;
+        } else if (*input ==' '){
+            space_count++;
+        } else if (isdigit(*input)){
+            digit_count++;
+        } else{
+            other_count++;
+        }
+        input++;
+    }
+    printf("alpha: %d, space: %d, digit: %d, other: %d\n",alpha_count,space_count,digit_count,other_count);
+}
+
+void testCalcCountOfStr(){
+    calcCountOfStr("qwert   123;''//=-*.\n");
+}
+
+/*
+ * 18、【题目】分数序列
+ * 有一分数序列：2/1，3/2，5/3，8/5，13/8，21/13...求出这个数列的前20项之和。
+ */
+
+
+
 
 
 
@@ -859,8 +913,9 @@ int main() {
     //testNotRepeatThreeDigitsSimple();
     //testNotRepeatThreeDigits();
     //testPrintMultiplicationTable();
-    testPrintRhombus();
-
+    //testPrintRhombus();
+    //testPrintChessBoard();
+    testCalcCountOfStr();
 
 
     gettimeofday(&end, 0);
