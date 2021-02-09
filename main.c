@@ -314,7 +314,37 @@ void testSieve() {
  * 例如：输入90,打印出90=2*3*3*5。
  */
 /**
- * 分解质因数
+ * 分解质因数并打印结果
+ * @param n 待分解数字
+ */
+void primeFactorsSimple(const int n) {
+    int temp = n;
+    printf("%d=", temp);
+    for (int i = 2; i <= temp; i++) {
+        while (temp != i) {
+            if (temp % i == 0) {
+                printf("%d*", i);
+                temp = temp / i;
+            } else {
+                break;
+            }
+        }
+    }
+    if (temp != n) {
+        printf("%d\n", temp);
+    } else {
+        printf("can't resolve!\n");
+    }
+}
+
+void testPrimeFactorsSimple() {
+    for (int i = 1; i <= 10000; ++i) {
+        primeFactorsSimple(i);
+    }
+}
+
+/**
+ * 分解质因数（通过质数表分解，更高效）
  * @param result 分解结果的质因子数组（第一列为 因子，第二列为 该因子个数）
  * @param count 不同质因子个数（用来遍历质因子数组）
  * @param prime 质数表
@@ -344,7 +374,7 @@ void primeFactors(int result[][2], int *restrict count, const int prime[], const
     }
 
     //待分解数的开方值及之前的质数尚未将其分解完，则分解到最后(非1非自身)的数即是最后一个质因子
-    if (temp != 1 && temp!=n) {
+    if (temp != 1 && temp != n) {
         result[*count][0] = temp;
         result[*count][1] = 1;
         (*count)++;
@@ -354,14 +384,14 @@ void primeFactors(int result[][2], int *restrict count, const int prime[], const
 
 void testPrimeFactors() {
     const int max = 10240;   //数组大小
-    static int prime[max] = {0};   //保存素数结果数组
+    static int prime[max / 2] = {0};   //保存素数结果数组
     static bool p[max] = {0};   //p[i]==false 则i为素数，反之非素数
     int countP = 0, countF = 0;  //素数个数
-    int result[max][2] = {0};
+    int result[10][2] = {0};    //int范围不同因子个数不会超过10个（2*3*5*...*29 > int）
 
-    sieve(prime, p, 100, &countP); //先获取质数表
+    sieve(prime, p, 1000, &countP); //先获取质数表
 
-    for (int i = 1; i <= 100; ++i) {
+    for (int i = 1; i <= 10000; ++i) {
         primeFactors(result, &countF, prime, i);    //分解
         if (countF > 0) {
             printf("%d=", i);
@@ -381,11 +411,144 @@ void testPrimeFactors() {
         }
         printf("\n");
     }
+}
 
+/*
+ *8、【题目】完数
+ * 完全数（Perfect number），又称完美数或完备数，是一些特殊的自然数。
+ * 它所有的真因子（即除了自身以外的约数）的和（即因子函数），恰好等于它本身。
+ * 例如6=1＋2＋3.编程找出1000以内的所有完数:6,28,49。
+ */
+/**
+ * 判断是否为完全数
+ * @param x 待判断数
+ * @return bool型：是true，否false
+ */
+bool perfectNumber(const int x) {
+
+    int sum = 0;
+    for (int i = 1; i < x; ++i) { //遍历所有数
+        if (x % i == 0) {   //因子
+            sum += i;
+        }
+    }
+    if (sum == x) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+void testPerfectNumber() {
+    for (int i = 1; i <= 1000; ++i) {
+        if (perfectNumber(i)) {
+            printf("%d\n", i);
+        }
+    }
+}
+
+/**
+ * 查找完全数（使用欧拉推导公式，更高效）
+ * @param result 结果数组
+ * @param count 结果数组长度
+ * @param primer 素数存储数组
+ * @param p 素数判断辅助数组
+ * @param n 查找范围上限
+ */
+void findPerfectNumber(int result[], int *const restrict count, const int primer[], const bool p[], const int n) {
+    int temp;
+    *count = 0;
+    //如果p是质数，且2^p-1也是质数,2^p-1称为梅森素数。
+    //欧拉曾推算出完全数的获得公式：如果p是质数，且2^p-1也是质数，那么（2^p-1）X2^（p-1）便是一个完全数。
+    for (int i = 0; (temp = pow(2, primer[i]) - 1) < n; ++i) {  //遍历素数表
+        if (!p[temp]) {
+            result[(*count)++] = temp * pow(2, primer[i] - 1);
+        }
+    }
+}
+
+void testFindPerfectNumber() {
+    const int max = 10240;   //数组大小
+    static int prime[max / 2] = {0};   //保存素数结果数组
+    static bool p[max] = {0};   //p[i]==false 则i为素数，反之非素数
+    int countP = 0, countR = 0;  //素数个数
+    int result[50] = {0};
+
+    sieve(prime, p, 1000, &countP); //先获取质数表
+
+    findPerfectNumber(result, &countR, prime, p, 1000);
+    for (int i = 0; i < countR; ++i) {
+        printf("%d\n", result[i]);
+    }
 
 }
 
+
+/*
+ * 9、【题目】最大公约数和最小公倍数
+ * 输入两个正整数m和n，求其最大公约数和最小公倍数。
+ * 最大公约数：gcd(a,b)=gcd(b,a%b）
+ * 最小公倍数：lcm(a,b)=a*b/gcd(a,b)  (避免溢出，先除后乘)
+ */
+/**
+ * 求最大公约数（递归）
+ * @param a 待求数字
+ * @param b 待求数字
+ * @return 最大公约数
+ */
+int gcd(int a, int b) {
+    return b ? gcd(b, a % b) : a;   //递归结束条件b==0，返回结果a
+}
+/**
+ * 求最小公倍数（递归）
+ * @param a 待求数字
+ * @param b 待求数字
+ * @return 最小公倍数
+ */
+int lcm(int a, int b) {
+    return a / gcd(a, b) * b;
+}
+
+void testGCDLCM(){
+    for (int i = 1; i < 10; ++i) {
+        int temp=i+rand()%100+1;
+        printf("%d,%d gcd:%d,lcm:%d\n",i,temp,gcd(i,temp),lcm(i,temp));
+    }
+}
+
+/**
+ * 求最大公约数和最小公倍数（非递归）
+ * @param a 待求数字
+ * @param b 待求数字
+ */
+void gcdAndLcm(int a,int b){
+    int n1=a,n2=b,temp;
+    if (n1<n2){
+        temp=n2;
+        n2=n1;
+        n1=temp;
+    }
+    while (n2){
+        temp=n1%n2;
+        n1=n2;
+        n2=temp;
+    }
+    printf("%d,%d gcd:%d,lcm:%d\n",a,b,n1,a/n1*b);
+}
+
+void testGcdAndLcm(){
+    for (int i = 1; i < 10; ++i) {
+        int temp=i+rand()%100+1;
+        gcdAndLcm(i,temp);
+    }
+}
+
+
+
+
 int main() {
+
+    srand((unsigned )time(NULL));
 
     /* time()精确到秒
     time_t start,end;
@@ -427,7 +590,12 @@ int main() {
     //testMatrixDiagSum();
     //testCountPrime();
     //testSieve();
-    testPrimeFactors();
+    //testPrimeFactorsSimple();
+    //testPrimeFactors();
+    //testPerfectNumber();
+    //testFindPerfectNumber();
+    //testGCDLCM();
+    testGcdAndLcm();
 
 
     gettimeofday(&end, 0);
