@@ -496,23 +496,24 @@ void testFindPerfectNumber() {
  * @param b 待求数字
  * @return 最大公约数
  */
-int gcd(int a, int b) {
+int gcd(const int a, const int b) {
     return b ? gcd(b, a % b) : a;   //递归结束条件b==0，返回结果a
 }
+
 /**
  * 求最小公倍数（递归）
  * @param a 待求数字
  * @param b 待求数字
  * @return 最小公倍数
  */
-int lcm(int a, int b) {
+int lcm(const int a, const int b) {
     return a / gcd(a, b) * b;
 }
 
-void testGCDLCM(){
+void testGCDLCM() {
     for (int i = 1; i < 10; ++i) {
-        int temp=i+rand()%100+1;
-        printf("%d,%d gcd:%d,lcm:%d\n",i,temp,gcd(i,temp),lcm(i,temp));
+        int temp = i + rand() % 100 + 1;
+        printf("%d,%d gcd:%d,lcm:%d\n", i, temp, gcd(i, temp), lcm(i, temp));
     }
 }
 
@@ -521,25 +522,281 @@ void testGCDLCM(){
  * @param a 待求数字
  * @param b 待求数字
  */
-void gcdAndLcm(int a,int b){
-    int n1=a,n2=b,temp;
-    if (n1<n2){
-        temp=n2;
-        n2=n1;
-        n1=temp;
+void gcdAndLcm(const int a, const int b) {
+    int n1 = a, n2 = b, temp;
+    if (n1 < n2) {
+        temp = n2;
+        n2 = n1;
+        n1 = temp;
     }
-    while (n2){
-        temp=n1%n2;
-        n1=n2;
-        n2=temp;
+    while (n2) {
+        temp = n1 % n2;
+        n1 = n2;
+        n2 = temp;
     }
-    printf("%d,%d gcd:%d,lcm:%d\n",a,b,n1,a/n1*b);
+    printf("%d,%d gcd:%d,lcm:%d\n", a, b, n1, a / n1 * b);
 }
 
-void testGcdAndLcm(){
+void testGcdAndLcm() {
     for (int i = 1; i < 10; ++i) {
-        int temp=i+rand()%100+1;
-        gcdAndLcm(i,temp);
+        int temp = i + rand() % 100 + 1;
+        gcdAndLcm(i, temp);
+    }
+}
+
+/*
+ * 10、【题目】三个数由小到大输出
+ */
+/**
+ * 三个数由小到大输出
+ * @param a 待处理数字
+ * @param b 待处理数字
+ * @param c 待处理数字
+ */
+void sortThreeNumber(const int a, const int b, const int c) {
+
+    int num[] = {a, b, c};  //映射到数组
+    int min = 0, max = 0;    //标记最小、最大值下标
+    for (int i = 0; i < 3; ++i) {   //遍历，查找最小最大值
+        if (num[i] < num[min]) {   //确定最小值下标
+            min = i;
+        } else if (num[i] > num[max]) {    //确定最大值下标
+            max = i;
+        }
+    }
+    printf("%3d,", num[min]);
+    printf("%3d,", num[3 - min - max]);
+    printf("%3d\n", num[max]);
+}
+
+void testSortThreeNumber() {
+    for (int i = 0; i < 10; ++i) {
+        int a[3] = {rand() % 100, rand() % 100, rand() % 100};
+        printf("%3d,%3d,%3d: ", a[0], a[1], a[2]);
+        sortThreeNumber(a[0], a[1], a[2]);
+    }
+}
+
+/*
+ * 11、【题目】企业发放的奖金根据利润提成
+ * 利润(I)低于或等于10万元时，奖金可提10%；
+ * 利润高于10万元，低于20万元时，低于10万元的部分按10%提成，高于10万元的部分，可提成7.5%；
+ * 20万到40万之间时，高于20万元的部分，可提成5%；
+ * 40万到60万之间时高于40万元的部分，可提成3%；
+ * 60万到100万之间时，高于60万元的部分，可提成1.5%;
+ * 高于100万元时，超过100万元的部分按1%提成。
+ * 从键盘输入当月利润I，求应发放奖金总数？
+ */
+/**
+ * 计算奖金（根据利润提成）
+ * @param i 利润
+ * @return 奖金
+ */
+double getBonus(double i) {
+
+    int bonus1 = 100000 * 0.1;
+    int bonus2 = bonus1 + (200000 - 100000) * 0.075;
+    int bonus4 = bonus2 + (400000 - 200000) * 0.05;
+    int bonus6 = bonus4 + (600000 - 400000) * 0.03;
+    int bonus10 = bonus6 + (1000000 - 600000) * 0.015;
+
+    double bonus = 0.0;
+    if (i <= 100000.0) {
+        bonus = i * 0.1;
+    } else if (i < 200000.0) {
+        bonus = (i - 100000.0) * 0.075 + bonus1;
+    } else if (i < 400000.0) {
+        bonus = (i - 200000.0) * 0.05 + bonus2;
+    } else if (i < 600000.0) {
+        bonus = (i - 400000.0) * 0.03 + bonus4;
+    } else if (i < 1000000.0) {
+        bonus = (i - 600000.0) * 0.015 + bonus6;
+    } else {
+        bonus = (i - 1000000.0) * 0.01 + bonus10;
+    }
+
+    return bonus;
+}
+
+void testGetBonus() {
+    double temp = 0.0;
+    for (int i = 0; i <= 11; ++i) {
+        printf("%-10.2f, %-10.2f\n", temp, getBonus(temp));
+        temp += 100000.0;
+    }
+}
+
+/*
+ * 12、【题目】判断这一天是这一年的第几天
+ * 输入某年某月某日，判断这一天是这一年的第几天？
+ */
+/**
+ * 计算某一天是这一年的第几天
+ * @param year 待判断的年
+ * @param month 待判断的月
+ * @param day 待判断的日
+ * @return 这一年的第几天
+ */
+int dayOfYear(int year, int month, int day) {
+
+    int days = 0;
+    int monthDays[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};    //每月天数
+    if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {     //闰年把2月加一天
+        monthDays[2]++;
+    }
+    //累计之前月的天数
+    for (int i = 1; i < month; ++i) {
+        days += monthDays[i];
+    }
+    //加当前月份天数
+    days += day;
+
+    return days;
+}
+
+void testDayOfYear() {
+    for (int i = 0; i < 10; ++i) {
+        int y = rand() % (2100 - 2000) + 2000;
+        int m = rand() % 12 + 1;
+        int d = rand() % 28 + 1;
+        printf("%4d.%02d.%02d: %d\n", y, m, d, dayOfYear(y, m, d));
+    }
+    printf("2000.03.01: %d\n", dayOfYear(2000, 3, 1));
+}
+
+/*
+ * 13、【题目】排列无重复数字的三位数(1234)
+ * 有1、2、3、4个数字，能组成多少个互不相同且无重复数字的三位数？都是多少？
+ */
+/**
+ * 排列无重复数字的三位数(穷举判断)
+ */
+void notRepeatThreeDigitsSimple(){
+    for (int i = 1; i < 5; i++) // 以下为三重循环
+    {
+        for (int j = 1; j < 5; j++)
+        {
+            for (int k = 1; k < 5; k++)
+            {
+                if (i != k && i != j && j != k) // 确保i、j、k三位互不相同
+                    printf("%d,%d,%d\n", i, j, k);
+            }
+        }
+    }
+}
+
+void testNotRepeatThreeDigitsSimple(){
+    notRepeatThreeDigitsSimple();
+}
+
+/**
+ * 排列无重复数字的三位数(递归)
+ * @param result 暂存每次排列结果
+ * @param p 辅助判断数组（下标对应排列用数字，值代表该数字是否已经用过）
+ * @param index 起始位置（默认从第一位开始排列数字，勿用其他值）
+ * @param bits 需要的排列结果位数
+ * @param count 排列可用数字个数(如 1个：1；4个：1，2，3，4)
+ */
+void notRepeatThreeDigits(int result[], bool p[], const int index, const int bits, const int count) {
+    if (index > bits) { //排列完指定位数后，打印当前结果
+        for (int i = 1; i <= bits; ++i) {
+            printf("%d ", result[i]);
+        }
+        printf("\n");
+        return;
+    } else {    //继续排列
+        for (int i = 1; i <= count; ++i) {  //遍历所有可用数字
+            if (!p[i]) {    //只用之前未使用的数字
+                p[i] = true;    //标记使用
+                result[index] = i; //加入暂存结果的数组
+                notRepeatThreeDigits(result, p, index + 1, bits, count);
+                p[i] = false;   //用完取消使用标记，使得以后递归可再用，必须要有！！！
+            }
+        }
+    }
+}
+
+void testNotRepeatThreeDigits() {
+
+    bool p[5] = {0};
+    int num[5] = {0};
+
+    notRepeatThreeDigits(num, p, 1, 3, 2);
+    printf("\n");
+    notRepeatThreeDigits(num, p, 1, 3, 3);
+    printf("\n");
+    notRepeatThreeDigits(num, p, 1, 3, 4);
+}
+
+/*
+ * 14、【题目】输出9*9口诀乘法表
+ */
+/**
+ * 打印9*9口诀乘法表
+ */
+void printMultiplicationTable(){
+    for (int i = 1; i <= 9; ++i) {
+        for (int j = 1; j <= i; ++j) {
+            printf("%d*%d=%-2d  ",j,i,i*j);
+        }
+        printf("\n");
+    }
+}
+
+void testPrintMultiplicationTable(){
+    printMultiplicationTable();
+}
+
+/*
+ * 15、【题目】打印出菱形图案
+ * 空格数目：l/2 ，...（每次减一），最长行为0，...（每次加一）
+ * 星号数目：1   ，...（每次加二），最长行为l，...（每次减二）
+ *         *
+ *        ***
+ *       *****
+ *      *******
+ *       *****
+ *        ***
+ *         *
+ */
+/**
+ * 打印出菱形图案
+ * @param l 行数(奇数)
+ */
+void printRhombus(int l){
+
+    int asterisk=1; //初始第一行星号数目
+    int blank=l/2;  //初始第一行星号前空格数目
+    for (int i = 1; i <= l/2+1; ++i) {  //前一半加一行
+        for (int j = 1; j <=blank; ++j) {
+            printf(" ");
+        }
+        for (int j = 1; j <= asterisk; ++j) {
+            printf("*");
+        }
+        blank--;        //下一行空白数目减一
+        asterisk+=2;    //下一行星号数目加二
+        printf("\n");
+    }
+    //调整数目
+    asterisk=l-2;
+    blank=1;
+    for (int i = l/2; i >=0 ; --i) {    //后一半减一行
+        for (int j = 1; j <=blank; ++j) {
+            printf(" ");
+        }
+        for (int j = 1; j <= asterisk; ++j) {
+            printf("*");
+        }
+        blank++;        //下一行空白数目加一
+        asterisk-=2;    //下一行星号数目减二
+        printf("\n");
+    }
+}
+
+void testPrintRhombus(){
+    for (int i = 1; i <= 11; i+=2) {
+        printRhombus(i);
     }
 }
 
@@ -548,7 +805,7 @@ void testGcdAndLcm(){
 
 int main() {
 
-    srand((unsigned )time(NULL));
+    srand((unsigned) time(NULL));
 
     /* time()精确到秒
     time_t start,end;
@@ -595,7 +852,15 @@ int main() {
     //testPerfectNumber();
     //testFindPerfectNumber();
     //testGCDLCM();
-    testGcdAndLcm();
+    //testGcdAndLcm();
+    //testSortThreeNumber();
+    //testGetBonus();
+    //testDayOfYear();
+    //testNotRepeatThreeDigitsSimple();
+    //testNotRepeatThreeDigits();
+    //testPrintMultiplicationTable();
+    testPrintRhombus();
+
 
 
     gettimeofday(&end, 0);
