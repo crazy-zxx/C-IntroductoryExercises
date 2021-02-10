@@ -925,9 +925,14 @@ void testFactorialLoop() {
  * 20、【题目】回文数
  * 例如：一个5位数，判断它是不是回文数。即12321是回文数，个位与万位相同，十位与千位相同。
  */
+/**
+ * 判断是否为回文数
+ * @param x 待判断数字
+ * @return bool型：是true，否false
+ */
 bool isPalindrome(const int x) {
     char temp[16] = {0};
-    sprintf(temp,"%d",x);
+    sprintf(temp, "%d", x);
     //自己实现数字映射为字符串，略费时
     //int n = x;
     //for (int i = 0; n && i < 16; ++i) {
@@ -951,6 +956,41 @@ void testIsPalindrome() {
     }
 }
 
+/*
+ * 21、【题目】求同数多项之和
+ * 求s=a+aa+aaa+aaaa+aa...a的值，其中a是一个数字。
+ * 例如2+22+222+2222+22222(此时共有5个数相加)
+ */
+/**
+ * 求同数多项之和
+ * @param x 构成数的数字（取值0-9）
+ * @param bits 构成的最大数字位数
+ * @return 同数多项之和
+ */
+int sameNumberSum(const int x, const int bits) {
+
+    if (x < 0 || x > 9 || bits < 0 || bits > 9) {
+        return -1;
+    }
+
+    int result = 0;
+    int temp = x, n = bits;
+    while (n--) {
+        result += temp;
+        temp = temp * 10 + x;
+    }
+
+    return result;
+}
+
+void testSameNumberSum() {
+    for (int i = 0; i < 10; ++i) {
+        int x = rand() % 9 + 1;
+        int bits = rand() % 9 + 1;
+        printf("%d bits %d : %d\n", bits, x, sameNumberSum(x, bits));
+    }
+    printf("9 bits 9 : %d\n", sameNumberSum(9, 9));
+}
 
 
 
@@ -1017,7 +1057,10 @@ int main() {
     //testFractionSum();
     //testFactorial();
     //testFactorialLoop();
-    testIsPalindrome();
+    //testIsPalindrome();
+    testSameNumberSum();
+
+
 
     gettimeofday(&end, 0);
     double timeuse = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;    //微秒数
