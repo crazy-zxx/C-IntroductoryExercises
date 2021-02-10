@@ -263,7 +263,7 @@ void testCountPrime() {
 }
 
 /*
- * 扩展：埃氏筛法
+ * 扩展：埃氏筛法求素数
  */
 /**
  * 埃氏筛法求素数
@@ -992,6 +992,79 @@ void testSameNumberSum() {
     printf("9 bits 9 : %d\n", sameNumberSum(9, 9));
 }
 
+/*
+ * 22、【题目】求100之内的素数,同6题
+ */
+void testPrimeHundred(){
+    for (int i = 0; i <= 100; ++i) {
+        if (isPrime(i)){
+            printf("%d\n",i);
+        }
+    }
+}
+
+/*
+ * 23、【题目】数组逆序输出
+ */
+/**
+ * 逆序输出数组元素
+ * @param arr 待输出数组
+ * @param n 数组元素个数
+ */
+void printReverseArr(const int arr[] ,const int n){
+    for (int i = n-1; i >=0 ; --i) {
+        printf("%3d ",arr[i]);
+    }
+}
+
+void testPrintReverseArr(){
+    int temp[10]={0};
+    for (int i = 0; i < 10; ++i) {
+        for (int i = 0; i < 10; ++i) {
+            temp[i]=rand()%100;
+            printf("%3d ",temp[i]);
+        }
+        printf("\n");
+        printReverseArr(temp,10);
+        printf("\n\n");
+    }
+}
+
+/**
+ * 翻转数组
+ * @param arr 待处理数组
+ * @param n 数组元素个数
+ */
+void reverseArr(int arr[],int n){
+    for (int i = 0; i < n/2; ++i) {
+        int temp=arr[i];
+        arr[i]=arr[n-1-i];
+        arr[n-1-i]=temp;
+    }
+}
+
+void testReverseArr(){
+    int temp[10]={0};
+    for (int i = 0; i < 10; ++i) {
+        for (int i = 0; i < 10; ++i) {
+            temp[i]=rand()%100;
+            printf("%3d ",temp[i]);
+        }
+        printf("\n");
+        reverseArr(temp,10);
+        for (int i = 0; i < 10; ++i) {
+            printf("%3d ",temp[i]);
+        }
+        printf("\n\n");
+    }
+}
+
+/*
+ * 24、【题目】将有序数组插入数字仍然有序。
+ * 现有已排好序的数组，将输入一个数，要求按原来的规律将它插入数组中。
+ */
+
+
 
 
 
@@ -1058,7 +1131,10 @@ int main() {
     //testFactorial();
     //testFactorialLoop();
     //testIsPalindrome();
-    testSameNumberSum();
+    //testSameNumberSum();
+    //testPrimeHundred();
+    //testPrintReverseArr();
+    testReverseArr();
 
 
 
