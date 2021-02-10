@@ -672,13 +672,11 @@ void testDayOfYear() {
 /**
  * 排列无重复数字的三位数(穷举判断)
  */
-void notRepeatThreeDigitsSimple(){
+void notRepeatThreeDigitsSimple() {
     for (int i = 1; i < 5; i++) // 以下为三重循环
     {
-        for (int j = 1; j < 5; j++)
-        {
-            for (int k = 1; k < 5; k++)
-            {
+        for (int j = 1; j < 5; j++) {
+            for (int k = 1; k < 5; k++) {
                 if (i != k && i != j && j != k) // 确保i、j、k三位互不相同
                     printf("%d,%d,%d\n", i, j, k);
             }
@@ -686,7 +684,7 @@ void notRepeatThreeDigitsSimple(){
     }
 }
 
-void testNotRepeatThreeDigitsSimple(){
+void testNotRepeatThreeDigitsSimple() {
     notRepeatThreeDigitsSimple();
 }
 
@@ -735,16 +733,16 @@ void testNotRepeatThreeDigits() {
 /**
  * 打印9*9口诀乘法表
  */
-void printMultiplicationTable(){
+void printMultiplicationTable() {
     for (int i = 1; i <= 9; ++i) {
         for (int j = 1; j <= i; ++j) {
-            printf("%d*%d=%-2d  ",j,i,i*j);
+            printf("%d*%d=%-2d  ", j, i, i * j);
         }
         printf("\n");
     }
 }
 
-void testPrintMultiplicationTable(){
+void testPrintMultiplicationTable() {
     printMultiplicationTable();
 }
 
@@ -764,39 +762,39 @@ void testPrintMultiplicationTable(){
  * 打印出菱形图案
  * @param l 行数(奇数)
  */
-void printRhombus(int l){
+void printRhombus(int l) {
 
-    int asterisk=1; //初始第一行星号数目
-    int blank=l/2;  //初始第一行星号前空格数目
-    for (int i = 1; i <= l/2+1; ++i) {  //前一半加一行
-        for (int j = 1; j <=blank; ++j) {
+    int asterisk = 1; //初始第一行星号数目
+    int blank = l / 2;  //初始第一行星号前空格数目
+    for (int i = 1; i <= l / 2 + 1; ++i) {  //前一半加一行
+        for (int j = 1; j <= blank; ++j) {
             printf(" ");
         }
         for (int j = 1; j <= asterisk; ++j) {
             printf("*");
         }
         blank--;        //下一行空白数目减一
-        asterisk+=2;    //下一行星号数目加二
+        asterisk += 2;    //下一行星号数目加二
         printf("\n");
     }
     //调整数目
-    asterisk=l-2;
-    blank=1;
-    for (int i = l/2; i >=0 ; --i) {    //后一半减一行
-        for (int j = 1; j <=blank; ++j) {
+    asterisk = l - 2;
+    blank = 1;
+    for (int i = l / 2; i >= 0; --i) {    //后一半减一行
+        for (int j = 1; j <= blank; ++j) {
             printf(" ");
         }
         for (int j = 1; j <= asterisk; ++j) {
             printf("*");
         }
         blank++;        //下一行空白数目加一
-        asterisk-=2;    //下一行星号数目减二
+        asterisk -= 2;    //下一行星号数目减二
         printf("\n");
     }
 }
 
-void testPrintRhombus(){
-    for (int i = 1; i <= 11; i+=2) {
+void testPrintRhombus() {
+    for (int i = 1; i <= 11; i += 2) {
         printRhombus(i);
     }
 }
@@ -804,13 +802,13 @@ void testPrintRhombus(){
 /*
  * 16、【题目】输出国际象棋棋盘
  */
-void printChessBoard(){
+void printChessBoard() {
     int a, b;
     for (a = 1; a <= 8; a++) {
-        for (b = 1; b <= 8; b++){
-            if ((b + a) % 2 == 0){
+        for (b = 1; b <= 8; b++) {
+            if ((b + a) % 2 == 0) {
                 printf("□");
-            }else{
+            } else {
                 printf("■");
             }
         }
@@ -818,7 +816,7 @@ void printChessBoard(){
     }
 }
 
-void testPrintChessBoard(){
+void testPrintChessBoard() {
     printChessBoard();
 }
 
@@ -826,32 +824,132 @@ void testPrintChessBoard(){
  * 17、【题目】统计出字母_空格_数字_其它字符个数
  * 输入一行字符，分别统计出字母、空格、数字和其它字符个。
  */
-void calcCountOfStr(const char * restrict input){
-    int alpha_count=0,space_count=0,digit_count=0,other_count=0;
-    while (*input!='\n'){
-        if (isalpha(*input)){
+void calcCountOfStr(const char *restrict input) {
+    int alpha_count = 0, space_count = 0, digit_count = 0, other_count = 0;
+    while (*input != '\n') {
+        if (isalpha(*input)) {
             alpha_count++;
-        } else if (*input ==' '){
+        } else if (*input == ' ') {
             space_count++;
-        } else if (isdigit(*input)){
+        } else if (isdigit(*input)) {
             digit_count++;
-        } else{
+        } else {
             other_count++;
         }
         input++;
     }
-    printf("alpha: %d, space: %d, digit: %d, other: %d\n",alpha_count,space_count,digit_count,other_count);
+    printf("alpha: %d, space: %d, digit: %d, other: %d\n", alpha_count, space_count, digit_count, other_count);
 }
 
-void testCalcCountOfStr(){
+void testCalcCountOfStr() {
     calcCountOfStr("qwert   123;''//=-*.\n");
 }
 
 /*
  * 18、【题目】分数序列
- * 有一分数序列：2/1，3/2，5/3，8/5，13/8，21/13...求出这个数列的前20项之和。
+ * 有一分数序列：2/1，3/2，5/3，8/5，13/8，21/13...求出这个数列的前20项之和。(斐波那契)
  */
+double fractionSum(const int n) {
+    int fibo[1024] = {1, 1};   //存储斐波那契数列
+    for (int i = 2; i <= n + 1; ++i) {    //计算斐波那契数列
+        fibo[i] = fibo[i - 2] + fibo[i - 1];
+    }
 
+    double sum = 0.0;
+    for (int i = 1; i <= n; ++i) {      //计算分数和
+        sum += fibo[i + 1] * 1.0 / fibo[i];
+    }
+    return sum;
+}
+
+void testFractionSum() {
+    for (int i = 1; i <= 20; ++i) {
+        printf("sum of %d items: %f\n", i, fractionSum(i));
+    }
+}
+
+/*
+ * 19、【题目】求阶乘
+ */
+/**
+ * 计算阶乘（递归，容易溢出堆栈）
+ * @param x 待求值
+ * @return 阶乘
+ */
+int factorial(const int x) {
+    if (x < 0) {
+        return NAN;
+    }
+    if (x <= 1) {
+        return 1;
+    } else {
+        return x * factorial(x - 1);
+    }
+}
+
+void testFactorial() {
+    for (int i = 0; i <= 10; ++i) {
+        printf("%d's factorial is : %d\n", i, factorial(i));
+    }
+}
+
+/**
+ * 计算阶乘（循环）
+ * @param x 待求值
+ * @return 阶乘
+ */
+long double factorialLoop(const int x) {
+
+    if (x < 0) {
+        return NAN;
+    }
+    if (x > 1754) {    //阶乘溢出类型值
+        return INFINITY;
+    }
+
+    long double result = 1.0;
+    for (int i = 2; i <= x; ++i) {
+        result *= i;
+    }
+
+    return result;
+}
+
+void testFactorialLoop() {
+    printf("%d's factorial is : %.0Lf\n", 10, factorialLoop(10));
+    printf("%d's factorial is : %.0Lf\n", 100, factorialLoop(100));
+    printf("%d's factorial is : %.0Lf\n", 1754, factorialLoop(1754));
+}
+
+/*
+ * 20、【题目】回文数
+ * 例如：一个5位数，判断它是不是回文数。即12321是回文数，个位与万位相同，十位与千位相同。
+ */
+bool isPalindrome(const int x) {
+    char temp[16] = {0};
+    sprintf(temp,"%d",x);
+    //自己实现数字映射为字符串，略费时
+    //int n = x;
+    //for (int i = 0; n && i < 16; ++i) {
+    //    temp[i] = n % 10;
+    //    n /= 10;
+    //}
+    int len = strlen(temp);
+    for (int i = 0; i < len / 2; ++i) {
+        if (temp[i] != temp[len - 1 - i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void testIsPalindrome() {
+    for (int i = -100; i < 1000; ++i) {
+        if (isPalindrome(i)) {
+            printf("%d\n", i);
+        }
+    }
+}
 
 
 
@@ -915,8 +1013,11 @@ int main() {
     //testPrintMultiplicationTable();
     //testPrintRhombus();
     //testPrintChessBoard();
-    testCalcCountOfStr();
-
+    //testCalcCountOfStr();
+    //testFractionSum();
+    //testFactorial();
+    //testFactorialLoop();
+    testIsPalindrome();
 
     gettimeofday(&end, 0);
     double timeuse = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;    //微秒数
