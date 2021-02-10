@@ -995,10 +995,10 @@ void testSameNumberSum() {
 /*
  * 22、【题目】求100之内的素数,同6题
  */
-void testPrimeHundred(){
+void testPrimeHundred() {
     for (int i = 0; i <= 100; ++i) {
-        if (isPrime(i)){
-            printf("%d\n",i);
+        if (isPrime(i)) {
+            printf("%d\n", i);
         }
     }
 }
@@ -1011,21 +1011,21 @@ void testPrimeHundred(){
  * @param arr 待输出数组
  * @param n 数组元素个数
  */
-void printReverseArr(const int arr[] ,const int n){
-    for (int i = n-1; i >=0 ; --i) {
-        printf("%3d ",arr[i]);
+void printReverseArr(const int arr[], const int n) {
+    for (int i = n - 1; i >= 0; --i) {
+        printf("%3d ", arr[i]);
     }
 }
 
-void testPrintReverseArr(){
-    int temp[10]={0};
+void testPrintReverseArr() {
+    int temp[10] = {0};
     for (int i = 0; i < 10; ++i) {
         for (int i = 0; i < 10; ++i) {
-            temp[i]=rand()%100;
-            printf("%3d ",temp[i]);
+            temp[i] = rand() % 100;
+            printf("%3d ", temp[i]);
         }
         printf("\n");
-        printReverseArr(temp,10);
+        printReverseArr(temp, 10);
         printf("\n\n");
     }
 }
@@ -1035,25 +1035,25 @@ void testPrintReverseArr(){
  * @param arr 待处理数组
  * @param n 数组元素个数
  */
-void reverseArr(int arr[],int n){
-    for (int i = 0; i < n/2; ++i) {
-        int temp=arr[i];
-        arr[i]=arr[n-1-i];
-        arr[n-1-i]=temp;
+void reverseArr(int arr[], int n) {
+    for (int i = 0; i < n / 2; ++i) {
+        int temp = arr[i];
+        arr[i] = arr[n - 1 - i];
+        arr[n - 1 - i] = temp;
     }
 }
 
-void testReverseArr(){
-    int temp[10]={0};
+void testReverseArr() {
+    int temp[10] = {0};
     for (int i = 0; i < 10; ++i) {
         for (int i = 0; i < 10; ++i) {
-            temp[i]=rand()%100;
-            printf("%3d ",temp[i]);
+            temp[i] = rand() % 100;
+            printf("%3d ", temp[i]);
         }
         printf("\n");
-        reverseArr(temp,10);
+        reverseArr(temp, 10);
         for (int i = 0; i < 10; ++i) {
-            printf("%3d ",temp[i]);
+            printf("%3d ", temp[i]);
         }
         printf("\n\n");
     }
@@ -1063,7 +1063,162 @@ void testReverseArr(){
  * 24、【题目】将有序数组插入数字仍然有序。
  * 现有已排好序的数组，将输入一个数，要求按原来的规律将它插入数组中。
  */
+/**
+ * 将数字插入有序数组，仍然保持有序
+ * @param arr 有序数组（请自行保证足够容纳）
+ * @param n 数组长度
+ * @param x 插入值
+ */
+void insertArr(int arr[], int n, int x) {
+    for (int i = 0; i < n; ++i) {
+        if (x <= arr[i]) {  //找到第一个大于等于插入值的数字，该位置就是插入位置
+            for (int j = n - 1; j >= i; --j) {  //后移
+                arr[j + 1] = arr[j];
+            }
+            arr[i] = x; //插入
+            return;
+        }
+    }
+}
 
+void testInsertArr() {
+
+    for (int i = 0; i < 10; ++i) {
+        int temp[15] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        for (int i = 0; i < 10; ++i) {
+            printf("%2d ", temp[i]);
+        }
+        insertArr(temp, 10, i);
+        printf("\ninsert %d to array:\n", i);
+        for (int i = 0; i < 11; ++i) {
+            printf("%2d ", temp[i]);
+        }
+        printf("\n\n");
+    }
+}
+
+/*
+ * 25、【题目】static用法
+ */
+void staticFun() {
+    int var = 0;
+    static int static_var = 0;
+    printf("\nvar :%d \n", var);
+    printf("static var :%d \n", static_var);
+    var++;
+    static_var++;
+}
+
+void testStaticFun() {
+    printf("\n【普通变量和静态变量区别】\n");
+    for (int i = 0; i < 3; i++) {
+        staticFun();
+    }
+}
+
+/*
+ * 26、【题目】auto用法
+ */
+void autoFun() {
+    int i, num;
+    num = 2;
+    for (i = 0; i < 3; i++) {
+        printf("The num equal %d \n", num);
+        num++;
+        {
+            auto int num = 1;
+            printf("The internal block num equal %d \n\n", num);
+            num++;
+        }
+    }
+}
+
+void testAutoFun() {
+    autoFun();
+}
+
+/*
+ * 27、【题目】extern用法
+ */
+int a_e = 5, b_e, c_e;
+
+void externFun() {
+    extern int a_e;
+    //a_e = 3;
+    c_e = a_e + b_e;
+}
+
+void testExternFun() {
+    b_e = 4;
+    externFun();
+    printf("\nThe value of c_e is equal to %d\n\n", c_e);
+}
+
+/*
+ * 28、【题目】register用法
+ */
+void registerFun(){
+    register int i;
+    int tmp = 0;
+    for (i = 1; i <= 100; i++){
+        tmp += i;
+    }
+    //printf("The register address is %p\n", &i);   //无法获取register变量地址
+    printf("The sum is %d\n", tmp);
+}
+
+void testRegisterFun(){
+    registerFun();
+}
+
+/*
+ * 29、【题目】宏define命令
+ */
+#define TRUE 1
+#define FALSE 0
+#define SQ(x) ((x)*(x))
+void defineFun(){
+    int num;
+    int again = 1;
+    while (again){
+        printf("Please input number-->:(>=50 loop)");
+        scanf("%d", &num);
+        printf("The square for this number is %d \n", SQ(num));
+        if (num >= 50){
+            again = TRUE;
+        }else{
+            again = FALSE;
+        }
+    }
+}
+
+void testDefineFun(){
+    defineFun();
+}
+
+/*
+ * 30、【题目】累积项之和
+ * 求1+2!+...+n!的和。
+ */
+long double factorialSum(const int n){
+    long double sum=0.0,temp=1.0;
+    for (int i = 1; i <= n; ++i) {
+        temp*=i;
+        sum+=temp;
+    }
+    return sum;
+}
+
+void testFactorialSum(){
+    for (int i = 1; i <= 10; ++i) {
+        printf("%d items sum: %.0Lf\n",i,factorialSum(i));
+    }
+}
+
+/*
+ * 31、【题目】温度转换
+ * 摄氏度=九分之五*(华氏度减去32)的积。
+ */
 
 
 
@@ -1134,7 +1289,14 @@ int main() {
     //testSameNumberSum();
     //testPrimeHundred();
     //testPrintReverseArr();
-    testReverseArr();
+    //testReverseArr();
+    //testInsertArr();
+    //testStaticFun();
+    //testAutoFun();
+    //testExternFun();
+    //testRegisterFun();
+    //testDefineFun();
+    testFactorialSum();
 
 
 
