@@ -1157,17 +1157,17 @@ void testExternFun() {
 /*
  * 28、【题目】register用法
  */
-void registerFun(){
+void registerFun() {
     register int i;
     int tmp = 0;
-    for (i = 1; i <= 100; i++){
+    for (i = 1; i <= 100; i++) {
         tmp += i;
     }
     //printf("The register address is %p\n", &i);   //无法获取register变量地址
     printf("The sum is %d\n", tmp);
 }
 
-void testRegisterFun(){
+void testRegisterFun() {
     registerFun();
 }
 
@@ -1177,22 +1177,23 @@ void testRegisterFun(){
 #define TRUE 1
 #define FALSE 0
 #define SQ(x) ((x)*(x))
-void defineFun(){
+
+void defineFun() {
     int num;
     int again = 1;
-    while (again){
+    while (again) {
         printf("Please input number-->:(>=50 loop)");
         scanf("%d", &num);
         printf("The square for this number is %d \n", SQ(num));
-        if (num >= 50){
+        if (num >= 50) {
             again = TRUE;
-        }else{
+        } else {
             again = FALSE;
         }
     }
 }
 
-void testDefineFun(){
+void testDefineFun() {
     defineFun();
 }
 
@@ -1200,25 +1201,77 @@ void testDefineFun(){
  * 30、【题目】累积项之和
  * 求1+2!+...+n!的和。
  */
-long double factorialSum(const int n){
-    long double sum=0.0,temp=1.0;
+long double factorialSum(const int n) {
+    long double sum = 0.0, temp = 1.0;
     for (int i = 1; i <= n; ++i) {
-        temp*=i;
-        sum+=temp;
+        temp *= i;
+        sum += temp;
     }
     return sum;
 }
 
-void testFactorialSum(){
+void testFactorialSum() {
     for (int i = 1; i <= 10; ++i) {
-        printf("%d items sum: %.0Lf\n",i,factorialSum(i));
+        printf("%d items sum: %.0Lf\n", i, factorialSum(i));
     }
 }
 
 /*
  * 31、【题目】温度转换
- * 摄氏度=九分之五*(华氏度减去32)的积。
+ * 热力学温度（又称开氏温度）(T)、华氏温度(F)、摄氏温度（C）的换算式
+ * T = (5/9) × (F - 32) + 273.15
+ * F = (9/5) × (T - 273.15) + 32
+ * C = (5/9) × F + 32
  */
+/**
+ * 温度转换(开氏温度T、华氏温度F、摄氏温度C换算)
+ * @param T 开氏温度
+ * @param F 华氏温度
+ * @param C 摄氏温度
+ * @param n 指明以第几个参数作为参考转换为其他温度
+ */
+void temperatureTrans(double *const restrict T, double *const restrict F,
+                      double *const restrict C, const int n) {
+
+    if (n == 1) {
+        *F = 9.0 / 5 * ((*T) - 273.15) + 32;
+        *C = (5.0 / 9) * ((*F) - 32);
+    } else if (n == 2) {
+        *T = (5.0 / 9) * ((*F) - 32) + 273.15;
+        *C = (5.0 / 9) * ((*F) - 32);
+    } else if (n == 3) {
+        *F = 1.8 * (*C) + 32;
+        *T = (5.0 / 9) * ((*F) - 32) + 273.15;
+    } else {
+        printf("Error!");
+        return;
+    }
+}
+
+void testTemperatureTrans() {
+    printf(" 开氏             华氏              摄氏 \n");
+    double a[3] = {100};
+    temperatureTrans(&a[0], &a[1], &a[2], 1);
+    for (int j = 0; j < 3; ++j) {
+        printf(" %-15.2f ", a[j]);
+    }
+    printf("\n");
+
+    double b[3] = {0, 100};
+    temperatureTrans(&b[0], &b[1], &b[2], 2);
+    for (int j = 0; j < 3; ++j) {
+        printf(" %-15.2f ", b[j]);
+    }
+    printf("\n");
+
+    double c[3] = {0, 0, 100};
+    temperatureTrans(&c[0], &c[1], &c[2], 3);
+    for (int j = 0; j < 3; ++j) {
+        printf(" %-15.2f ", c[j]);
+    }
+    printf("\n");
+}
+
 
 
 
@@ -1296,8 +1349,8 @@ int main() {
     //testExternFun();
     //testRegisterFun();
     //testDefineFun();
-    testFactorialSum();
-
+    //testFactorialSum();
+    testTemperatureTrans();
 
 
     gettimeofday(&end, 0);
