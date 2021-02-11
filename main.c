@@ -1272,8 +1272,138 @@ void testTemperatureTrans() {
     printf("\n");
 }
 
+/*
+ * 32、【题目】计算存款利息
+ * 假设有本金1000元，想存一年，有三种方法可选择：
+ * 活期，年利率为0.0036；
+ * 一年期定期，年利率为0.0225；
+ * 存两次半年定期，年利率为0.0198。
+ * 请分别计算出一年后按3种方法所得到的本息和
+ */
+/**
+ * 计算存款利息
+ * @param capital 本金
+ */
+void saveInterests(const double capital) {
 
+    if (capital < 0) {
+        printf("Error!\n");
+        return;
+    }
 
+    double rate1 = 0.0036;
+    double rate2 = 0.0225;
+    double rate3 = 0.0198;
+
+    double money1 = capital * (1 + rate1);
+    double money2 = capital * (1 + rate2);
+    double money3 = capital * (1 + rate3 / 2) * (1 + rate3 / 2);
+
+    printf("%.2f : %.2f,%.2f,%.2f\n", capital, money1, money2, money3);
+}
+
+void testSaveInterests() {
+    saveInterests(-10);
+    saveInterests(0);
+    saveInterests(10);
+    saveInterests(1000);
+}
+
+/*
+ * 33、【题目】判断某一年是否是闰年
+ */
+/**
+ * 判断是否为闰年
+ * @param year 年份
+ * @return bool型：是true，否false
+ */
+bool isLeapYear(const int year) {
+    if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+void testIsLeapYear() {
+    for (int i = 1900; i < 2030; ++i) {
+        if (isLeapYear(i)) {
+            printf("%d is leap year\n", i);
+        }
+    }
+}
+
+/*
+ * 34、【题目】杨辉三角
+ */
+/**
+ * 打印杨辉三角（二维数组，极其浪费空间）
+ * @param n 行数
+ */
+void printYHTriangle(const int n) {
+    if (n <= 0) {
+        printf("Error!\n");
+        return;
+    }
+
+    int t[100][100] = {0};    //二维数组保存（极其浪费空间，可用俩数组相互交换数据，实时打印）
+    t[1][1] = 1;
+    for (int i = 2; i <= n; ++i) {
+        for (int j = 1; j <= i; ++j) {
+            if (j > 1 && j <= i) {
+                t[i][j] = t[i - 1][j - 1] + t[i - 1][j];
+            } else {
+                t[i][j] = t[i - 1][j];
+            }
+        }
+    }
+
+    for (int i = 1; i <= n; ++i) {
+        for (int j = 1; j <= i; ++j) {
+            printf(" %5d ", t[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+void testPrintYHTriangle() {
+    for (int i = 0; i <= 10; ++i) {
+        printYHTriangle(i);
+    }
+}
+
+/**
+ * 打印杨辉三角（两数组，节省空间）
+ * @param n 行数
+ */
+void printYHTriangle2(const int n) {
+
+    if (n <= 0) {
+        printf("Error!\n");
+        return;
+    }
+
+    unsigned long long t[1024] = {0}, temp[1024] = {0, 1};
+
+    for (int i = 1; i <= n; ++i) {
+        for (int j = 1; j <= i; ++j) {
+            t[j] = temp[j - 1] + temp[j];
+            printf(" %5d ", t[j]);
+        }
+        for (int j = 1; j <= i; ++j) {
+            temp[j] = t[j];
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+void testPrintYHTriangle2() {
+    for (int i = 0; i <= 10; ++i) {
+        printYHTriangle2(i);
+    }
+}
 
 
 int main() {
@@ -1350,8 +1480,11 @@ int main() {
     //testRegisterFun();
     //testDefineFun();
     //testFactorialSum();
-    testTemperatureTrans();
-
+    //testTemperatureTrans();
+    //testSaveInterests();
+    //testIsLeapYear();
+    //testPrintYHTriangle();
+    testPrintYHTriangle2();
 
     gettimeofday(&end, 0);
     double timeuse = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;    //微秒数
