@@ -1550,12 +1550,49 @@ void testDayOfTheWeek(){
 
 /*
  * 38、【题目】删除字符
- * 删除一个字符串中的指定字母，如：字符串 "aca"，删除其中的 a 字母。
+ * 删除一个字符串中的指定字符，如：字符串 "aca"，删除其中的 a 字符。
+ */
+/**
+ * 删除一个字符串中的指定字符（不修改源字符串）
+ * @param str 字符串
+ * @param ch 指定字符
+ * @return 删除后的新字符串
+ */
+char *deleteChar(const char *str,const char ch){
+
+    if (!str){
+        return NULL;
+    }
+
+    int len=strlen(str);
+    char *result=malloc(sizeof(char)*(len+1));
+    int count=0;
+    for (int i = 0; i < len; ++i) {
+        if (str[i]!=ch){
+            result[count++]=str[i];
+        }
+    }
+    result[count]='\0';
+    return result;
+}
+
+void testDeleteChar(){
+    puts(deleteChar("aba",'a'));
+    puts(deleteChar("abcdedcfs",'d'));
+    puts(deleteChar("apple",'p'));
+    puts(deleteChar("aba",'f'));
+}
+
+/*
+ * 39、【题目】
  */
 
 
 
 
+/*
+ * 40、【题目】
+ */
 
 
 int main() {
@@ -1641,8 +1678,8 @@ int main() {
     //testCalcOnePerfectSquare();
     //testPingPangGame();
     //testResolveInt();
-    testDayOfTheWeek();
-
+    //testDayOfTheWeek();
+    testDeleteChar();
 
     gettimeofday(&end, 0);
     double timeuse = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;    //微秒数
