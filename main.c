@@ -1465,15 +1465,15 @@ void testCalcOnePerfectSquare() {
 /**
  * 乒乓球比赛方案
  */
-void testPingPangGame(){
-    char i,j,k;
-    for(i='x';i<='z';i++) {                 //a的对手
-        for(j='x';j<='z';j++) {             //b的对手
-            if(i!=j) {                      //a，b对手不同
-                for(k='x';k<='z';k++) {     //c的对手
-                    if(i!=k&&j!=k) {        //a，b和c对手不同
-                        if(i!='x'&&k!='x'&&k!='z') {    //a不和x比，c不和x,z比
-                            printf("顺序为：a--%c , b--%c , c--%c\n",i,j,k);
+void testPingPangGame() {
+    char i, j, k;
+    for (i = 'x'; i <= 'z'; i++) {                 //a的对手
+        for (j = 'x'; j <= 'z'; j++) {             //b的对手
+            if (i != j) {                      //a，b对手不同
+                for (k = 'x'; k <= 'z'; k++) {     //c的对手
+                    if (i != k && j != k) {        //a，b和c对手不同
+                        if (i != 'x' && k != 'x' && k != 'z') {    //a不和x比，c不和x,z比
+                            printf("顺序为：a--%c , b--%c , c--%c\n", i, j, k);
                         }
                     }
                 }
@@ -1490,18 +1490,18 @@ void testPingPangGame(){
  * 分解正整数
  * @param x 待处理数值
  */
-void resolveInt(const int x){
-    int count=0;
-    int n=x;
-    while (n){
-        printf("%d",n%10);
-        n/=10;
+void resolveInt(const int x) {
+    int count = 0;
+    int n = x;
+    while (n) {
+        printf("%d", n % 10);
+        n /= 10;
         count++;
     }
-    printf(" %d bits\n",count);
+    printf(" %d bits\n", count);
 }
 
-void testResolveInt(){
+void testResolveInt() {
     resolveInt(100);
     resolveInt(1234);
     resolveInt(13579);
@@ -1512,13 +1512,12 @@ void testResolveInt(){
  *  38、【题目】判断星期
  *  请输入星期几的第一个字母来判断一下是星期几，如果第一个字母一样，则继续判断第二个字母
  */
-void testDayOfTheWeek(){
-    char i,j;
+void testDayOfTheWeek() {
+    char i, j;
     printf("请输入第一个字母:\n");
-    scanf("%c",&i);
+    scanf("%c", &i);
     getchar();
-    switch(i)
-    {
+    switch (i) {
         case 'm':
         case 'M':
             printf("monday\n");
@@ -1534,17 +1533,30 @@ void testDayOfTheWeek(){
         case 't':
         case 'T':
             printf("请输入下一个字母\n");
-            scanf("%c",&j);
-            if (j=='u') {printf("tuesday\n");break;}
-            if (j=='h') {printf("thursday\n");break;}
+            scanf("%c", &j);
+            if (j == 'u') {
+                printf("tuesday\n");
+                break;
+            }
+            if (j == 'h') {
+                printf("thursday\n");
+                break;
+            }
         case 's':
         case 'S':
             printf("请输入下一个字母\n");
-            scanf("%c",&j);
-            if (j=='a') {printf("saturday\n");break;}
-            if (j=='u') {printf("sunday\n"); break;}
+            scanf("%c", &j);
+            if (j == 'a') {
+                printf("saturday\n");
+                break;
+            }
+            if (j == 'u') {
+                printf("sunday\n");
+                break;
+            }
         default :
-            printf("error\n"); break;
+            printf("error\n");
+            break;
     }
 }
 
@@ -1558,36 +1570,142 @@ void testDayOfTheWeek(){
  * @param ch 指定字符
  * @return 删除后的新字符串
  */
-char *deleteChar(const char *str,const char ch){
+char *deleteChar(const char *str, const char ch) {
 
-    if (!str){
+    if (!str) {
         return NULL;
     }
 
-    int len=strlen(str);
-    char *result=malloc(sizeof(char)*(len+1));
-    int count=0;
+    int len = strlen(str);
+    char *result = (char *) malloc(sizeof(char) * (len + 1));
+    int count = 0;
     for (int i = 0; i < len; ++i) {
-        if (str[i]!=ch){
-            result[count++]=str[i];
+        if (str[i] != ch) {
+            result[count++] = str[i];
         }
     }
-    result[count]='\0';
+    result[count] = '\0';
     return result;
 }
 
-void testDeleteChar(){
-    puts(deleteChar("aba",'a'));
-    puts(deleteChar("abcdedcfs",'d'));
-    puts(deleteChar("apple",'p'));
-    puts(deleteChar("aba",'f'));
+void testDeleteChar() {
+    puts(deleteChar("aba", 'a'));
+    puts(deleteChar("abcdedcfs", 'd'));
+    puts(deleteChar("apple", 'p'));
+    puts(deleteChar("aba", 'f'));
 }
 
 /*
- * 39、【题目】
+ * 39、【题目】排序
+ * 对10个数进行排序。
  */
+/**
+ * 直接插入排序算法
+ * @param arr 待排序数组
+ * @param n 元素个数
+ */
+void insertSort(int arr[], int n) {
 
+    for (int i = 1; i < n; ++i) {   //从第二个元素开始插入
+        if (arr[i] < arr[i - 1]) {  //待插入的值 小于 已有序部分的最后一个，需要继续向前比较
+            int temp = arr[i];        //暂存待插入值，
+            arr[i] = arr[i - 1];        //向后移动已有序部分的最后元素
+            int j;
+            for (j = i - 2; temp < arr[j] && j >= 0; --j) { //继续向前比较
+                arr[j + 1] = arr[j];    //向后移动有序部分
+            }
+            arr[j + 1] = temp;          //插入
+        }
+    }
+}
 
+/**
+ * 二分（折半）插入排序算法
+ * @param arr 待排序数组
+ * @param n 元素个数
+ */
+void binaryInsertSort(int arr[], int n) {
+
+    for (int i = 1; i < n; ++i) {       //从第二个元素开始插入
+        int temp = arr[i];
+        int low = 0, high = i - 1;      //有序区间
+        while (low <= high) {           //low <= high
+            int mid = (low + high) / 2;
+            if (arr[i] < arr[mid]) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        for (int j = i - 1; j > high; --j) {  //后移有序部分
+            arr[j + 1] = arr[j];
+        }
+        arr[high + 1] = temp;       //插入（插入位置为low==high+1）
+    }
+}
+
+void shellSort(int arr[], int n) {
+
+}
+
+void bubbleSort(int arr[], int n) {
+
+}
+
+void quickSort(int arr[], int n) {
+
+}
+
+void selectSort(int arr[], int n) {
+
+}
+
+void heapSort(int arr[], int n) {
+
+}
+
+void mergeSort(int arr[], int n) {
+
+}
+
+void qsortTen(int arr[], int n) {
+
+}
+
+void printArr(int arr[], int n) {
+    for (int i = 0; i < 10; ++i) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+void testSortTenNumber() {
+
+    int a[10] = {1, 3, 8, 6, 4, 5, 9, 2, 0, 7};
+    printArr(a, 10);
+    insertSort(a, 10);
+    printArr(a, 10);
+
+    int b[10] = {1, 3, 8, 6, 4, 5, 9, 2, 0, 7};
+    printArr(b, 10);
+    binaryInsertSort(b,10);
+    printArr(b, 10);
+
+    printArr(a, 10);
+    printArr(a, 10);
+
+    printArr(a, 10);
+    printArr(a, 10);
+
+    printArr(a, 10);
+    printArr(a, 10);
+
+    printArr(a, 10);
+    printArr(a, 10);
+
+    printArr(a, 10);
+    printArr(a, 10);
+}
 
 
 /*
@@ -1679,7 +1797,9 @@ int main() {
     //testPingPangGame();
     //testResolveInt();
     //testDayOfTheWeek();
-    testDeleteChar();
+    //testDeleteChar();
+    testSortTenNumber();
+
 
     gettimeofday(&end, 0);
     double timeuse = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;    //微秒数
