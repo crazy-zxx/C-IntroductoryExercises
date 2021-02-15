@@ -315,26 +315,28 @@ void testSieve() {
  * 例如：输入90,打印出90=2*3*3*5。
  */
 /**
- * 分解质因数并打印结果
+ * 正整数分解质因数并打印结果
  * @param n 待分解数字
  */
 void primeFactorsSimple(const int n) {
+    if (n <= 1) {
+        printf("%d=can't resolve!\n", n);
+        return;
+    }
+
     int temp = n;
     printf("%d=", temp);
     for (int i = 2; i <= temp; i++) {
-        while (temp != i) {
-            if (temp % i == 0) {
-                printf("%d*", i);
-                temp = temp / i;
+        while (temp % i == 0) {
+            printf("%d", i);
+            temp /= i;
+            if (temp != 1) {
+                printf("*");
             } else {
-                break;
+                printf("\n");
+                return;
             }
         }
-    }
-    if (temp != n) {
-        printf("%d\n", temp);
-    } else {
-        printf("can't resolve!\n");
     }
 }
 
@@ -353,9 +355,9 @@ void testPrimeFactorsSimple() {
  */
 void primeFactors(int result[][2], int *restrict count, const int prime[], const int n) {
 
-    *count = 0;
-    int sqrt_n = sqrt(n);
     int temp = n;
+    int sqrt_n = sqrt(n);
+    *count = 0;
 
     for (int i = 0; prime[i] <= sqrt_n; ++i) {  //遍历质数表，只需遍历到待分解数的平方根
 
@@ -1440,23 +1442,20 @@ void testIsPerfectSquare() {
 /**
  * 求解整数，它加上100后是一个完全平方数，再加上168又是一个完全平方数
  */
-void calcOnePerfectSquare(){
-    for (int i = 84; i >=2; i-=2) {
-        int j=168/i;
-        int n=(i+j)/2;
-        int m=(i-j)/2;
-        if (i>=j && n*n-268 == m*m-100){
-            printf("%d\n",n*n-268);
+void calcOnePerfectSquare() {
+    for (int i = 84; i >= 2; i -= 2) {
+        int j = 168 / i;
+        int n = (i + j) / 2;
+        int m = (i - j) / 2;
+        if (i >= j && n * n - 268 == m * m - 100) {
+            printf("%d\n", n * n - 268);
         }
     }
 }
 
-void testCalcOnePerfectSquare(){
+void testCalcOnePerfectSquare() {
     calcOnePerfectSquare();
 }
-
-
-
 
 
 int main() {
@@ -1503,7 +1502,7 @@ int main() {
     //testMatrixDiagSum();
     //testCountPrime();
     //testSieve();
-    //testPrimeFactorsSimple();
+    testPrimeFactorsSimple();
     //testPrimeFactors();
     //testPerfectNumber();
     //testFindPerfectNumber();
@@ -1539,7 +1538,8 @@ int main() {
     //testPrintYHTriangle();
     //testPrintYHTriangle2();
     //testIsPerfectSquare();
-    testCalcOnePerfectSquare();
+    //testCalcOnePerfectSquare();
+
 
 
     gettimeofday(&end, 0);
