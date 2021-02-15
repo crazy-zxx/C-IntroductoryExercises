@@ -1486,6 +1486,10 @@ void testPingPangGame(){
  * 37、【题目】分解正整数
  * 要求：一、求它是几位数，二、逆序打印出各位数字。
  */
+/**
+ * 分解正整数
+ * @param x 待处理数值
+ */
 void resolveInt(const int x){
     int count=0;
     int n=x;
@@ -1503,6 +1507,52 @@ void testResolveInt(){
     resolveInt(13579);
     resolveInt(246810);
 }
+
+/*
+ *  38、【题目】判断星期
+ *  请输入星期几的第一个字母来判断一下是星期几，如果第一个字母一样，则继续判断第二个字母
+ */
+void testDayOfTheWeek(){
+    char i,j;
+    printf("请输入第一个字母:\n");
+    scanf("%c",&i);
+    getchar();
+    switch(i)
+    {
+        case 'm':
+        case 'M':
+            printf("monday\n");
+            break;
+        case 'w':
+        case 'W':
+            printf("wednesday\n");
+            break;
+        case 'f':
+        case 'F':
+            printf("friday\n");
+            break;
+        case 't':
+        case 'T':
+            printf("请输入下一个字母\n");
+            scanf("%c",&j);
+            if (j=='u') {printf("tuesday\n");break;}
+            if (j=='h') {printf("thursday\n");break;}
+        case 's':
+        case 'S':
+            printf("请输入下一个字母\n");
+            scanf("%c",&j);
+            if (j=='a') {printf("saturday\n");break;}
+            if (j=='u') {printf("sunday\n"); break;}
+        default :
+            printf("error\n"); break;
+    }
+}
+
+/*
+ * 38、【题目】删除字符
+ * 删除一个字符串中的指定字母，如：字符串 "aca"，删除其中的 a 字母。
+ */
+
 
 
 
@@ -1590,7 +1640,9 @@ int main() {
     //testIsPerfectSquare();
     //testCalcOnePerfectSquare();
     //testPingPangGame();
-    testResolveInt();
+    //testResolveInt();
+    testDayOfTheWeek();
+
 
     gettimeofday(&end, 0);
     double timeuse = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;    //微秒数
