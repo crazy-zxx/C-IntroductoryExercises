@@ -174,13 +174,13 @@ void testMonkeyEatPeach() {
  * @return （long double [2]）{目前总弹跳距离，下次弹跳高度}
  */
 long double *freeFall(const long double height, const int times) {
-    long double h = height, sum = 100.0;
+    long double h = height, sum = height;
     int t = 2;
-    while (t++ <= times && h > 0.0) {
+    while (t++ <= times && h > 0) {
         sum += h;
-        h /= 2.0;
+        h /= 2;
     }
-    return (long double[2]) {sum, h / 2.0};
+    return (long double[2]) {sum, h / 2};
 }
 
 void testFreeFall() {
@@ -527,12 +527,12 @@ void testGCDLCM() {
  */
 void gcdAndLcm(const int a, const int b) {
     int n1 = a, n2 = b, temp;
-    if (n1 < n2) {
+    if (n1 < n2) {  //保证 n1 > n2
         temp = n2;
         n2 = n1;
         n1 = temp;
     }
-    while (n2) {
+    while (n2) {    //辗转相除法（又名欧几里德算法）
         temp = n1 % n2;
         n1 = n2;
         n2 = temp;
@@ -1457,6 +1457,56 @@ void testCalcOnePerfectSquare() {
     calcOnePerfectSquare();
 }
 
+/*
+ * 37、【题目】乒乓球比赛
+ * 两个乒乓球队进行比赛，各出三人。甲队为a,b,c三人，乙队为x,y,z三人。
+ * a说他不和x比，c说他不和x,z比，请编程序找出三队赛手的名单。
+ */
+/**
+ * 乒乓球比赛方案
+ */
+void testPingPangGame(){
+    char i,j,k;
+    for(i='x';i<='z';i++) {                 //a的对手
+        for(j='x';j<='z';j++) {             //b的对手
+            if(i!=j) {                      //a，b对手不同
+                for(k='x';k<='z';k++) {     //c的对手
+                    if(i!=k&&j!=k) {        //a，b和c对手不同
+                        if(i!='x'&&k!='x'&&k!='z') {    //a不和x比，c不和x,z比
+                            printf("顺序为：a--%c , b--%c , c--%c\n",i,j,k);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/*
+ * 37、【题目】分解正整数
+ * 要求：一、求它是几位数，二、逆序打印出各位数字。
+ */
+void resolveInt(const int x){
+    int count=0;
+    int n=x;
+    while (n){
+        printf("%d",n%10);
+        n/=10;
+        count++;
+    }
+    printf(" %d bits\n",count);
+}
+
+void testResolveInt(){
+    resolveInt(100);
+    resolveInt(1234);
+    resolveInt(13579);
+    resolveInt(246810);
+}
+
+
+
+
 
 int main() {
 
@@ -1502,7 +1552,7 @@ int main() {
     //testMatrixDiagSum();
     //testCountPrime();
     //testSieve();
-    testPrimeFactorsSimple();
+    //testPrimeFactorsSimple();
     //testPrimeFactors();
     //testPerfectNumber();
     //testFindPerfectNumber();
@@ -1539,8 +1589,8 @@ int main() {
     //testPrintYHTriangle2();
     //testIsPerfectSquare();
     //testCalcOnePerfectSquare();
-
-
+    //testPingPangGame();
+    testResolveInt();
 
     gettimeofday(&end, 0);
     double timeuse = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;    //微秒数
