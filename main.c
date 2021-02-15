@@ -673,8 +673,7 @@ void testDayOfYear() {
  * 排列无重复数字的三位数(穷举判断)
  */
 void notRepeatThreeDigitsSimple() {
-    for (int i = 1; i < 5; i++) // 以下为三重循环
-    {
+    for (int i = 1; i < 5; i++) {       // 以下为三重循环
         for (int j = 1; j < 5; j++) {
             for (int k = 1; k < 5; k++) {
                 if (i != k && i != j && j != k) // 确保i、j、k三位互不相同
@@ -1385,11 +1384,10 @@ void printYHTriangle2(const int n) {
     }
 
     unsigned long long t[1024] = {0}, temp[1024] = {0, 1};
-
     for (int i = 1; i <= n; ++i) {
         for (int j = 1; j <= i; ++j) {
             t[j] = temp[j - 1] + temp[j];
-            printf(" %5d ", t[j]);
+            printf(" %5llu ", t[j]);
         }
         for (int j = 1; j <= i; ++j) {
             temp[j] = t[j];
@@ -1404,6 +1402,61 @@ void testPrintYHTriangle2() {
         printYHTriangle2(i);
     }
 }
+
+/*
+ * 36、【题目】完全平方数
+ * x = n^2 >= 0，则x为完全平方数
+ */
+/**
+ * 判断是否是完全平方数
+ * @param x 待判断数值
+ * @return bool型：是true，否false
+ */
+bool isPerfectSquare(int x) {
+    if (x >= 0 && (int) pow((int) sqrt(x), 2) == x) {
+        return true;
+    }
+    return false;
+}
+
+void testIsPerfectSquare() {
+    for (int i = 0; i < 1000; ++i) {
+        if (isPerfectSquare(i)) {
+            printf("%d\n", i);
+        }
+    }
+}
+
+/*
+ * 36、【题目】一个整数，它加上100后是一个完全平方数，再加上168又是一个完全平方数，请问该数是多少？
+ * x+100=m^2
+ * x+268=n^2
+ * ==> n^2-m^2=(n+m)(n-m)=168
+ * ==> n+m=i,n-m=j,i*j=168
+ * ==> n=(i+j)/2,m=(i-j)/2
+ * ==> i,j都是偶数,且i>=j>=2
+ * ==> 2<=i<=168/2=84,j=168/i
+ */
+/**
+ * 求解整数，它加上100后是一个完全平方数，再加上168又是一个完全平方数
+ */
+void calcOnePerfectSquare(){
+    for (int i = 84; i >=2; i-=2) {
+        int j=168/i;
+        int n=(i+j)/2;
+        int m=(i-j)/2;
+        if (i>=j && n*n-268 == m*m-100){
+            printf("%d\n",n*n-268);
+        }
+    }
+}
+
+void testCalcOnePerfectSquare(){
+    calcOnePerfectSquare();
+}
+
+
+
 
 
 int main() {
@@ -1484,7 +1537,10 @@ int main() {
     //testSaveInterests();
     //testIsLeapYear();
     //testPrintYHTriangle();
-    testPrintYHTriangle2();
+    //testPrintYHTriangle2();
+    //testIsPerfectSquare();
+    testCalcOnePerfectSquare();
+
 
     gettimeofday(&end, 0);
     double timeuse = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;    //微秒数
