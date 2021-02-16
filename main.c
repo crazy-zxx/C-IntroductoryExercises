@@ -1071,14 +1071,29 @@ void testReverseArr() {
  * @param x 插入值
  */
 void insertArr(int arr[], int n, int x) {
-    for (int i = 0; i < n; ++i) {
-        if (x <= arr[i]) {  //找到第一个大于等于插入值的数字，该位置就是插入位置
-            for (int j = n - 1; j >= i; --j) {  //后移
-                arr[j + 1] = arr[j];
+    if (n>0){
+        if (n<=1 || arr[0]<=arr[1]){
+            for (int i = 0; i < n; ++i) {
+                if (x <= arr[i]) {  //找到第一个大于等于插入值的数字，该位置就是插入位置
+                    for (int j = n - 1; j >= i; --j) {  //后移
+                        arr[j + 1] = arr[j];
+                    }
+                    arr[i] = x; //插入
+                    return;
+                }
             }
-            arr[i] = x; //插入
-            return;
+        } else{
+            for (int i = 0; i < n; ++i) {
+                if (x > arr[i]) {  //找到第一个大于等于插入值的数字，该位置就是插入位置
+                    for (int j = n - 1; j >= i; --j) {  //后移
+                        arr[j + 1] = arr[j];
+                    }
+                    arr[i] = x; //插入
+                    return;
+                }
+            }
         }
+
     }
 }
 
@@ -1096,7 +1111,21 @@ void testInsertArr() {
         }
         printf("\n\n");
     }
+
+    for (int i = 0; i < 10; ++i) {
+        int temp[15] = {9,8,7,6,5,4,3,2,1,0};
+        for (int i = 0; i < 10; ++i) {
+            printf("%2d ", temp[i]);
+        }
+        insertArr(temp, 10, i);
+        printf("\ninsert %d to array:\n", i);
+        for (int i = 0; i < 11; ++i) {
+            printf("%2d ", temp[i]);
+        }
+        printf("\n\n");
+    }
 }
+
 
 /*
  * 25、【题目】static用法
@@ -1881,7 +1910,7 @@ void qsortN(int arr[], int n) {
  * @param n 元素个数
  */
 void printArr(int arr[], int n) {
-    for (int i = 0; i < 10; ++i) {
+    for (int i = 0; i < n; ++i) {
         printf("%d ", arr[i]);
     }
     printf("\n");
@@ -1947,8 +1976,36 @@ void testSortTenNumber() {
 
 
 /*
- * 40、【题目】
+ * 40、【题目】交换最值
+ * 将一个数组，最大的与第一个元素交换，最小的与最后一个元素交换，输出数组。
  */
+void minMaxSwitch(int arr[],int n){
+    int min=0,max=0;
+    for (int i = 1; i < n; ++i) {
+        if (arr[i]<arr[min]){
+            min=i;
+        } else if(arr[i]>arr[max]){
+            max=i;
+        }
+    }
+    int temp=arr[min];
+    arr[min]=arr[n-1];
+    arr[n-1]=temp;
+
+    temp=arr[max];
+    arr[max]=arr[0];
+    arr[0]=temp;
+}
+
+void testMinMaxSwitch(){
+
+    int a[8]={1,3,2,8,7,6,5,0};
+    printArr(a,8);
+    minMaxSwitch(a,8);
+    printArr(a,8);
+
+}
+
 
 
 int main() {
@@ -1986,7 +2043,9 @@ int main() {
     struct timeval start, end;
     gettimeofday(&start, 0); //参数：接受时间的结构体，时区设置
 
+    /*
     //sleep(1);
+
     //testIsNarcissistic();
     //testIsSelfPower();
     //testFibonacci();
@@ -2036,7 +2095,9 @@ int main() {
     //testResolveInt();
     //testDayOfTheWeek();
     //testDeleteChar();
-    testSortTenNumber();
+    //testSortTenNumber();
+    */
+    testMinMaxSwitch();
 
 
     gettimeofday(&end, 0);
