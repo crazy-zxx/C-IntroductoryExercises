@@ -1754,7 +1754,48 @@ void selectSort(int arr[], int n) {
     }
 }
 
+/**
+ * 将部分元素调整为大顶堆
+ * @param arr 待调整数组
+ * @param start 起始下标（包括）
+ * @param end 结束下标（包括）
+ */
+void adjustBigHeap(int arr[],int start,int end){
+
+    int temp=arr[start];
+
+    for (int i = 2*start; i <=end ; i*=2) { //层层向下判断调整
+        if (i<end && arr[i]<arr[i+1]){  //寻找两个孩子最大值
+            i++;
+        }
+        if (temp>=arr[i]){  //双亲结点比两个子节点大，不需调整
+            break;
+        }
+        arr[start]=arr[i];  //调整，父与大数值孩子换位
+
+        start=i;    //继续沿当前孩子分支向下判断
+    }
+    arr[start]=temp;    //插入原堆顶到合适位置
+}
+
+/**
+ * 堆排序算法
+ * @param arr 待排序数组
+ * @param n 元素个数
+ */
 void heapSort(int arr[], int n) {
+
+    for (int i = (n-1)/2; i >=0 ; --i) {    //建大顶堆
+        adjustBigHeap(arr,i,n-1);
+    }
+
+    for (int i = 1; i < n; ++i) {   //取出堆顶元素，将[0,n-i]重新调整为大顶堆
+        int temp=arr[0];
+        arr[0]=arr[n-i];
+        arr[n-i]=temp;
+
+        adjustBigHeap(arr,0,n-1-i);
+    }
 
 }
 
@@ -1813,6 +1854,7 @@ void testSortTenNumber() {
 
     int g[10] = {1, 3, 8, 6, 4, 5, 9, 2, 0, 7};
     printArr(g, 10);
+    heapSort(g,10);
     printArr(g, 10);
     printf("\n");
 }
