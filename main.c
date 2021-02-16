@@ -1673,16 +1673,16 @@ void shellSort(int arr[], int n) {
 void bubbleSort(int arr[], int n) {
 
     for (int i = 1; i < n; ++i) {
-        bool flag=true;
+        bool flag = true;
         for (int j = 1; j < n; ++j) {
-            if (arr[j-1]>arr[j]){
-                int temp=arr[j];
-                arr[j]=arr[j-1];
-                arr[j-1]=temp;
-                flag=false;
+            if (arr[j - 1] > arr[j]) {
+                int temp = arr[j];
+                arr[j] = arr[j - 1];
+                arr[j - 1] = temp;
+                flag = false;
             }
         }
-        if(flag){
+        if (flag) {
             break;
         }
     }
@@ -1695,19 +1695,19 @@ void bubbleSort(int arr[], int n) {
  * @param high 上界
  * @return 一次划分后枢纽的下标
  */
-int partition(int arr[],int low,int high){
-    int temp=arr[low];
-    while (low<high){
-        while (low<high && arr[high]>temp){
+int partition(int arr[], int low, int high) {
+    int temp = arr[low];
+    while (low < high) {
+        while (low < high && arr[high] > temp) {
             high--;
         }
-        arr[low]=arr[high];
-        while (low<high && arr[low]<temp){
+        arr[low] = arr[high];
+        while (low < high && arr[low] < temp) {
             low++;
         }
-        arr[high]=arr[low];
+        arr[high] = arr[low];
     }
-    arr[low]=temp;
+    arr[low] = temp;
     return low;
 }
 /**
@@ -1716,11 +1716,11 @@ int partition(int arr[],int low,int high){
  * @param low 下界
  * @param high 上界
  */
-void QSort(int arr[],int low,int high){
-    if (low<high){
-        int pos=partition(arr,low,high);
-        QSort(arr,low,pos-1);
-        QSort(arr,pos+1,high);
+void QSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pos = partition(arr, low, high);
+        QSort(arr, low, pos - 1);
+        QSort(arr, pos + 1, high);
     }
 }
 /**
@@ -1729,7 +1729,7 @@ void QSort(int arr[],int low,int high){
  * @param n 元素个数
  */
 void quickSort(int arr[], int n) {
-    QSort(arr,0,n-1);
+    QSort(arr, 0, n - 1);
 }
 
 /**
@@ -1739,17 +1739,17 @@ void quickSort(int arr[], int n) {
  */
 void selectSort(int arr[], int n) {
 
-    for (int i = 0; i < n-1; ++i) {
-        int temp=arr[i];
-        int minPos=i;       //最小值下标
-        for (int j = i+1; j <n ; ++j) { //找最小值下标
-            if (arr[j]<arr[minPos]){
-                minPos=j;
+    for (int i = 0; i < n - 1; ++i) {
+        int temp = arr[i];
+        int minPos = i;       //最小值下标
+        for (int j = i + 1; j < n; ++j) { //找最小值下标
+            if (arr[j] < arr[minPos]) {
+                minPos = j;
             }
         }
-        if (minPos!=i){ //交换
-            arr[i]=arr[minPos];
-            arr[minPos]=temp;
+        if (minPos != i) { //交换
+            arr[i] = arr[minPos];
+            arr[minPos] = temp;
         }
     }
 }
@@ -1760,24 +1760,23 @@ void selectSort(int arr[], int n) {
  * @param start 起始下标（包括）
  * @param end 结束下标（包括）
  */
-void adjustBigHeap(int arr[],int start,int end){
+void adjustBigHeap(int arr[], int start, int end) {
 
-    int temp=arr[start];
+    int temp = arr[start];
 
-    for (int i = 2*start; i <=end ; i*=2) { //层层向下判断调整
-        if (i<end && arr[i]<arr[i+1]){  //寻找两个孩子最大值
+    for (int i = 2 * start; i <= end; i *= 2) { //层层向下判断调整
+        if (i < end && arr[i] < arr[i + 1]) {  //寻找两个孩子最大值
             i++;
         }
-        if (temp>=arr[i]){  //双亲结点比两个子节点大，不需调整
+        if (temp >= arr[i]) {  //双亲结点比两个子节点大，不需调整
             break;
         }
-        arr[start]=arr[i];  //调整，父与大数值孩子换位
+        arr[start] = arr[i];  //调整，父与大数值孩子换位
 
-        start=i;    //继续沿当前孩子分支向下判断
+        start = i;    //继续沿当前孩子分支向下判断
     }
-    arr[start]=temp;    //插入原堆顶到合适位置
+    arr[start] = temp;    //插入原堆顶到合适位置
 }
-
 /**
  * 堆排序算法
  * @param arr 待排序数组
@@ -1785,28 +1784,102 @@ void adjustBigHeap(int arr[],int start,int end){
  */
 void heapSort(int arr[], int n) {
 
-    for (int i = (n-1)/2; i >=0 ; --i) {    //建大顶堆
-        adjustBigHeap(arr,i,n-1);
+    for (int i = (n - 1) / 2; i >= 0; --i) {    //建大顶堆
+        adjustBigHeap(arr, i, n - 1);
     }
 
     for (int i = 1; i < n; ++i) {   //取出堆顶元素，将[0,n-i]重新调整为大顶堆
-        int temp=arr[0];
-        arr[0]=arr[n-i];
-        arr[n-i]=temp;
+        int temp = arr[0];
+        arr[0] = arr[n - i];
+        arr[n - i] = temp;
 
-        adjustBigHeap(arr,0,n-1-i);
+        adjustBigHeap(arr, 0, n - 1 - i);
     }
 
 }
 
+/**
+ * 合并两个有序序列为一个有序序列:sArr[l..m,m+1..n] ==> tArr[l,n]
+ * @param sArr 源数组
+ * @param tArr 目的数组
+ * @param l 起始下标（包括）
+ * @param m 中间下标
+ * @param n 终止下标（包括）
+ */
+void merge(int sArr[], int tArr[], int l, int m, int n) {
+    int i;  //遍历sArr右半部分
+    int j;  //遍历tArr数组
+            //l遍历sArr左半部分
+    for (i = m + 1, j = l; i <= n && l <= m; ++j) {    //升序归并两部分，两者取小作为当前需要插入值
+        if (sArr[l] <= sArr[i]) {
+            tArr[j] = sArr[l++];
+        } else {
+            tArr[j] = sArr[i++];
+        }
+    }
+    while (l <= m) {   //如左半部分有剩余，追加
+        tArr[j++] = sArr[l++];
+    }
+    while (i <= n) {   //如右半部分有剩余，追加
+        tArr[j++] = sArr[i++];
+    }
+}
+
+/**
+ * 二路归并（递归）:sArr[s..t] ==> tArr[s..t]
+ * @param sArr 源数组
+ * @param tArr 目的数组
+ * @param s 起始下标（包括）
+ * @param t 终止下标（包括）
+ */
+void MSort(int sArr[], int tArr[], int s, int t) {
+
+    if (s == t) {               //只有一个元素，不需归并
+        tArr[s] = sArr[s];
+    } else {
+        int temp[1024] = {0};   //临时数组，用于暂存归并序列
+        int mid = (s + t) / 2;
+        MSort(sArr, temp, s, mid);              //左递归归并
+        MSort(sArr, temp, mid + 1, t);        //右递归归并
+        merge(temp, tArr, s, mid, t);           //归并左右两部分
+    }
+}
+
+/**
+ * 二路归并排序算法
+ * @param arr 待排序数组
+ * @param n 元素个数
+ */
 void mergeSort(int arr[], int n) {
 
-}
-
-void qsortTen(int arr[], int n) {
+    MSort(arr, arr, 0, n - 1);
 
 }
 
+/**
+ * 提供给qsort的比较函数
+ * @param a 第一个参数
+ * @param b 第二个参数
+ * @return a-b
+ */
+int compare(const void *a,const void *b){
+    return *(int *)a-*(int *)b;
+}
+/**
+ * 调用库函数qsort排序
+ * @param arr 待排序数组
+ * @param n 元素个数
+ */
+void qsortN(int arr[], int n) {
+
+    qsort(arr,n,sizeof(int),compare);
+}
+
+/**
+ * 打印数组元素
+ * @param arr 待打印数组
+ * @param n 元素个数
+ */
 void printArr(int arr[], int n) {
     for (int i = 0; i < 10; ++i) {
         printf("%d ", arr[i]);
@@ -1836,27 +1909,40 @@ void testSortTenNumber() {
 
     int d[10] = {1, 3, 8, 6, 4, 5, 9, 2, 0, 7};
     printArr(d, 10);
-    bubbleSort(d,10);
+    bubbleSort(d, 10);
     printArr(d, 10);
     printf("\n");
 
     int e[10] = {1, 3, 8, 6, 4, 5, 9, 2, 0, 7};
     printArr(e, 10);
-    quickSort(e,10);
+    quickSort(e, 10);
     printArr(e, 10);
     printf("\n");
 
     int f[10] = {1, 3, 8, 6, 4, 5, 9, 2, 0, 7};
     printArr(f, 10);
-    selectSort(f,10);
+    selectSort(f, 10);
     printArr(f, 10);
     printf("\n");
 
     int g[10] = {1, 3, 8, 6, 4, 5, 9, 2, 0, 7};
     printArr(g, 10);
-    heapSort(g,10);
+    heapSort(g, 10);
     printArr(g, 10);
     printf("\n");
+
+    int h[10] = {1, 3, 8, 6, 4, 5, 9, 2, 0, 7};
+    printArr(h, 10);
+    mergeSort(h, 10);
+    printArr(h, 10);
+    printf("\n");
+
+    int i[10] = {1, 3, 8, 6, 4, 5, 9, 2, 0, 7};
+    printArr(i, 10);
+    qsortN(i,10);
+    printArr(i, 10);
+    printf("\n");
+
 }
 
 
