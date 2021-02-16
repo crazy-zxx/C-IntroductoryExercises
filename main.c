@@ -1640,24 +1640,118 @@ void binaryInsertSort(int arr[], int n) {
         for (int j = i - 1; j > high; --j) {  //后移有序部分
             arr[j + 1] = arr[j];
         }
-        arr[high + 1] = temp;       //插入（插入位置为low==high+1）
+        arr[low] = temp;       //插入（插入位置为low==high+1）
     }
 }
 
+/**
+ * 希尔排序算法
+ * @param arr 待排序数组
+ * @param n 元素个数
+ */
 void shellSort(int arr[], int n) {
 
+    for (int i = n / 2; i > 0; i /= 2) {    //折半增量：n/2，n/4，... ，1
+        for (int j = i; j < n; j += i) {    //间隔增量成组比较直插
+            if (arr[j] < arr[j - i]) {
+                int temp = arr[j];
+                int k;
+                for (k = j - i; temp < arr[k] && k >= 0; k -= i) {    //继续向前比较
+                    arr[k + i] = arr[k];
+                }
+                arr[k + i] = temp;
+            }
+        }
+    }
 }
 
+/**
+ * 冒泡排序算法
+ * @param arr 待排序数组
+ * @param n 元素个数
+ */
 void bubbleSort(int arr[], int n) {
 
+    for (int i = 1; i < n; ++i) {
+        bool flag=true;
+        for (int j = 1; j < n; ++j) {
+            if (arr[j-1]>arr[j]){
+                int temp=arr[j];
+                arr[j]=arr[j-1];
+                arr[j-1]=temp;
+                flag=false;
+            }
+        }
+        if(flag){
+            break;
+        }
+    }
 }
 
+/**
+ * 快排一次划分
+ * @param arr 待排序数组
+ * @param low 下界
+ * @param high 上界
+ * @return 一次划分后枢纽的下标
+ */
+int partition(int arr[],int low,int high){
+    int temp=arr[low];
+    while (low<high){
+        while (low<high && arr[high]>temp){
+            high--;
+        }
+        arr[low]=arr[high];
+        while (low<high && arr[low]<temp){
+            low++;
+        }
+        arr[high]=arr[low];
+    }
+    arr[low]=temp;
+    return low;
+}
+/**
+ * 快排递归处理
+ * @param arr 待排序数组
+ * @param low 下界
+ * @param high 上界
+ */
+void QSort(int arr[],int low,int high){
+    if (low<high){
+        int pos=partition(arr,low,high);
+        QSort(arr,low,pos-1);
+        QSort(arr,pos+1,high);
+    }
+}
+/**
+ * 快速排序算法
+ * @param arr 待排序数组
+ * @param n 元素个数
+ */
 void quickSort(int arr[], int n) {
-
+    QSort(arr,0,n-1);
 }
 
+/**
+ * 简单选择排序算法
+ * @param arr 待排序数组
+ * @param n 元素个数
+ */
 void selectSort(int arr[], int n) {
 
+    for (int i = 0; i < n-1; ++i) {
+        int temp=arr[i];
+        int minPos=i;       //最小值下标
+        for (int j = i+1; j <n ; ++j) { //找最小值下标
+            if (arr[j]<arr[minPos]){
+                minPos=j;
+            }
+        }
+        if (minPos!=i){ //交换
+            arr[i]=arr[minPos];
+            arr[minPos]=temp;
+        }
+    }
 }
 
 void heapSort(int arr[], int n) {
@@ -1685,26 +1779,42 @@ void testSortTenNumber() {
     printArr(a, 10);
     insertSort(a, 10);
     printArr(a, 10);
+    printf("\n");
 
     int b[10] = {1, 3, 8, 6, 4, 5, 9, 2, 0, 7};
     printArr(b, 10);
-    binaryInsertSort(b,10);
+    binaryInsertSort(b, 10);
     printArr(b, 10);
+    printf("\n");
 
-    printArr(a, 10);
-    printArr(a, 10);
+    int c[10] = {1, 3, 8, 6, 4, 5, 9, 2, 0, 7};
+    printArr(c, 10);
+    shellSort(c, 10);
+    printArr(c, 10);
+    printf("\n");
 
-    printArr(a, 10);
-    printArr(a, 10);
+    int d[10] = {1, 3, 8, 6, 4, 5, 9, 2, 0, 7};
+    printArr(d, 10);
+    bubbleSort(d,10);
+    printArr(d, 10);
+    printf("\n");
 
-    printArr(a, 10);
-    printArr(a, 10);
+    int e[10] = {1, 3, 8, 6, 4, 5, 9, 2, 0, 7};
+    printArr(e, 10);
+    quickSort(e,10);
+    printArr(e, 10);
+    printf("\n");
 
-    printArr(a, 10);
-    printArr(a, 10);
+    int f[10] = {1, 3, 8, 6, 4, 5, 9, 2, 0, 7};
+    printArr(f, 10);
+    selectSort(f,10);
+    printArr(f, 10);
+    printf("\n");
 
-    printArr(a, 10);
-    printArr(a, 10);
+    int g[10] = {1, 3, 8, 6, 4, 5, 9, 2, 0, 7};
+    printArr(g, 10);
+    printArr(g, 10);
+    printf("\n");
 }
 
 
