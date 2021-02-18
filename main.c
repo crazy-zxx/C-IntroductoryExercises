@@ -2065,13 +2065,17 @@ void testLoopMoveArr() {
  */
 int JosephusProblem(const int n, const int m) {
 
+    if (n <= 0 || m <= 0) {
+        return 0;
+    }
+
     bool p[n + 1];  //人映射到数组（序号对应下标，从下标1到n），true活，false死
     for (int i = 0; i < n + 1; ++i) {   //开始所有人都活
         p[i] = true;
     }
 
     int i = 1;      //遍历数组的下标，初始第一个人
-    int num=0;      //当前报数值，初始未开始报数
+    int num = 0;      //当前报数值，初始未开始报数
     int last = 1;   //最后死的人的序号（下标），初始第一个人
     int dead = 0;   //当前死亡人数，初始还没人死
 
@@ -2081,9 +2085,9 @@ int JosephusProblem(const int n, const int m) {
         }
         if (p[i]) {             //这人没死
             num++;              //就得报数
-            if (num == m){      //报到该死的数立马去死
+            if (num == m) {      //报到该死的数立马去死
                 p[i] = false;   //他死了
-                num=0;          //报数值清零
+                num = 0;          //报数值清零
                 last = i;       //记录最后死的人是他
                 dead++;         //死亡人数加一
             }
@@ -2094,14 +2098,26 @@ int JosephusProblem(const int n, const int m) {
     return last;    //返回最后死的人的序号
 }
 
-void testJosephusProblem(){
+void testJosephusProblem() {
     for (int i = 1; i < 10; ++i) {
-        int n=rand()%50+5;
-        int m=rand()%10+1;
-        printf("%3d,%3d : %3d\n",n,m,JosephusProblem(n,m));
+        int n = rand() % 50 ;
+        int m = rand() % 50 ;
+        printf("%3d,%3d : %3d\n", n, m, JosephusProblem(n, m));
     }
-    printf("%3d,%3d : %3d\n",8,3,JosephusProblem(8,3));
+    printf("%3d,%3d : %3d\n", 8, 3, JosephusProblem(8, 3));
 }
+
+/*
+ * 43、【题目】反向输出链表
+ */
+typedef struct LNode{
+    int          data;
+    struct LNode *next;
+}LNode,*LinkList;
+
+
+
+
 
 
 int main() {
