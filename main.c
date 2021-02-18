@@ -1071,8 +1071,8 @@ void testReverseArr() {
  * @param x 插入值
  */
 void insertArr(int arr[], int n, int x) {
-    if (n>0){
-        if (n<=1 || arr[0]<=arr[1]){
+    if (n > 0) {
+        if (n <= 1 || arr[0] <= arr[1]) {
             for (int i = 0; i < n; ++i) {
                 if (x <= arr[i]) {  //找到第一个大于等于插入值的数字，该位置就是插入位置
                     for (int j = n - 1; j >= i; --j) {  //后移
@@ -1082,7 +1082,7 @@ void insertArr(int arr[], int n, int x) {
                     return;
                 }
             }
-        } else{
+        } else {
             for (int i = 0; i < n; ++i) {
                 if (x > arr[i]) {  //找到第一个大于等于插入值的数字，该位置就是插入位置
                     for (int j = n - 1; j >= i; --j) {  //后移
@@ -1113,7 +1113,7 @@ void testInsertArr() {
     }
 
     for (int i = 0; i < 10; ++i) {
-        int temp[15] = {9,8,7,6,5,4,3,2,1,0};
+        int temp[15] = {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
         for (int i = 0; i < 10; ++i) {
             printf("%2d ", temp[i]);
         }
@@ -1443,7 +1443,7 @@ void testPrintYHTriangle2() {
  * @param x 待判断数值
  * @return bool型：是true，否false
  */
-bool isPerfectSquare(int x) {
+bool isPerfectSquare(const int x) {
     if (x >= 0 && (int) pow((int) sqrt(x), 2) == x) {
         return true;
     }
@@ -1633,7 +1633,7 @@ void testDeleteChar() {
  * @param arr 待排序数组
  * @param n 元素个数
  */
-void insertSort(int arr[], int n) {
+void insertSort(int arr[], const int n) {
 
     for (int i = 1; i < n; ++i) {   //从第二个元素开始插入
         if (arr[i] < arr[i - 1]) {  //待插入的值 小于 已有序部分的最后一个，需要继续向前比较
@@ -1653,7 +1653,7 @@ void insertSort(int arr[], int n) {
  * @param arr 待排序数组
  * @param n 元素个数
  */
-void binaryInsertSort(int arr[], int n) {
+void binaryInsertSort(int arr[], const int n) {
 
     for (int i = 1; i < n; ++i) {       //从第二个元素开始插入
         int temp = arr[i];
@@ -1678,7 +1678,7 @@ void binaryInsertSort(int arr[], int n) {
  * @param arr 待排序数组
  * @param n 元素个数
  */
-void shellSort(int arr[], int n) {
+void shellSort(int arr[], const int n) {
 
     for (int i = n / 2; i > 0; i /= 2) {    //折半增量：n/2，n/4，... ，1
         for (int j = i; j < n; j += i) {    //间隔增量成组比较直插
@@ -1699,7 +1699,7 @@ void shellSort(int arr[], int n) {
  * @param arr 待排序数组
  * @param n 元素个数
  */
-void bubbleSort(int arr[], int n) {
+void bubbleSort(int arr[], const int n) {
 
     for (int i = 1; i < n; ++i) {
         bool flag = true;
@@ -1739,25 +1739,27 @@ int partition(int arr[], int low, int high) {
     arr[low] = temp;
     return low;
 }
+
 /**
  * 快排递归处理
  * @param arr 待排序数组
  * @param low 下界
  * @param high 上界
  */
-void QSort(int arr[], int low, int high) {
+void QSort(int arr[], const int low, const int high) {
     if (low < high) {
         int pos = partition(arr, low, high);
         QSort(arr, low, pos - 1);
         QSort(arr, pos + 1, high);
     }
 }
+
 /**
  * 快速排序算法
  * @param arr 待排序数组
  * @param n 元素个数
  */
-void quickSort(int arr[], int n) {
+void quickSort(int arr[], const int n) {
     QSort(arr, 0, n - 1);
 }
 
@@ -1766,7 +1768,7 @@ void quickSort(int arr[], int n) {
  * @param arr 待排序数组
  * @param n 元素个数
  */
-void selectSort(int arr[], int n) {
+void selectSort(int arr[], const int n) {
 
     for (int i = 0; i < n - 1; ++i) {
         int temp = arr[i];
@@ -1806,12 +1808,13 @@ void adjustBigHeap(int arr[], int start, int end) {
     }
     arr[start] = temp;    //插入原堆顶到合适位置
 }
+
 /**
  * 堆排序算法
  * @param arr 待排序数组
  * @param n 元素个数
  */
-void heapSort(int arr[], int n) {
+void heapSort(int arr[], const int n) {
 
     for (int i = (n - 1) / 2; i >= 0; --i) {    //建大顶堆
         adjustBigHeap(arr, i, n - 1);
@@ -1835,10 +1838,10 @@ void heapSort(int arr[], int n) {
  * @param m 中间下标
  * @param n 终止下标（包括）
  */
-void merge(int sArr[], int tArr[], int l, int m, int n) {
+void merge(int sArr[], int tArr[], int l, const int m, const int n) {
     int i;  //遍历sArr右半部分
     int j;  //遍历tArr数组
-            //l遍历sArr左半部分
+    //l遍历sArr左半部分
     for (i = m + 1, j = l; i <= n && l <= m; ++j) {    //升序归并两部分，两者取小作为当前需要插入值
         if (sArr[l] <= sArr[i]) {
             tArr[j] = sArr[l++];
@@ -1861,7 +1864,7 @@ void merge(int sArr[], int tArr[], int l, int m, int n) {
  * @param s 起始下标（包括）
  * @param t 终止下标（包括）
  */
-void MSort(int sArr[], int tArr[], int s, int t) {
+void MSort(int sArr[], int tArr[], const int s, const int t) {
 
     if (s == t) {               //只有一个元素，不需归并
         tArr[s] = sArr[s];
@@ -1879,7 +1882,7 @@ void MSort(int sArr[], int tArr[], int s, int t) {
  * @param arr 待排序数组
  * @param n 元素个数
  */
-void mergeSort(int arr[], int n) {
+void mergeSort(int arr[], const int n) {
 
     MSort(arr, arr, 0, n - 1);
 
@@ -1891,17 +1894,18 @@ void mergeSort(int arr[], int n) {
  * @param b 第二个参数
  * @return a-b
  */
-int compare(const void *a,const void *b){
-    return *(int *)a-*(int *)b;
+int compare(const void *a, const void *b) {
+    return *(int *) a - *(int *) b;
 }
+
 /**
  * 调用库函数qsort排序
  * @param arr 待排序数组
  * @param n 元素个数
  */
-void qsortN(int arr[], int n) {
+void qsortN(int arr[], const int n) {
 
-    qsort(arr,n,sizeof(int),compare);
+    qsort(arr, n, sizeof(int), compare);
 }
 
 /**
@@ -1909,7 +1913,7 @@ void qsortN(int arr[], int n) {
  * @param arr 待打印数组
  * @param n 元素个数
  */
-void printArr(int arr[], int n) {
+void printArr(int arr[], const int n) {
     for (int i = 0; i < n; ++i) {
         printf("%d ", arr[i]);
     }
@@ -1968,7 +1972,7 @@ void testSortTenNumber() {
 
     int i[10] = {1, 3, 8, 6, 4, 5, 9, 2, 0, 7};
     printArr(i, 10);
-    qsortN(i,10);
+    qsortN(i, 10);
     printArr(i, 10);
     printf("\n");
 
@@ -1979,30 +1983,30 @@ void testSortTenNumber() {
  * 40、【题目】交换最值
  * 将一个数组，最大的与第一个元素交换，最小的与最后一个元素交换，输出数组。
  */
-void minMaxSwitch(int arr[],int n){
-    int min=0,max=0;
+void minMaxSwitch(int arr[], const int n) {
+    int min = 0, max = 0;
     for (int i = 1; i < n; ++i) {
-        if (arr[i]<arr[min]){
-            min=i;
-        } else if(arr[i]>arr[max]){
-            max=i;
+        if (arr[i] < arr[min]) {
+            min = i;
+        } else if (arr[i] > arr[max]) {
+            max = i;
         }
     }
-    int temp=arr[min];
-    arr[min]=arr[n-1];
-    arr[n-1]=temp;
+    int temp = arr[min];
+    arr[min] = arr[n - 1];
+    arr[n - 1] = temp;
 
-    temp=arr[max];
-    arr[max]=arr[0];
-    arr[0]=temp;
+    temp = arr[max];
+    arr[max] = arr[0];
+    arr[0] = temp;
 }
 
-void testMinMaxSwitch(){
+void testMinMaxSwitch() {
 
-    int a[8]={1,3,2,8,7,6,5,0};
-    printArr(a,8);
-    minMaxSwitch(a,8);
-    printArr(a,8);
+    int a[8] = {1, 3, 2, 8, 7, 6, 5, 0};
+    printArr(a, 8);
+    minMaxSwitch(a, 8);
+    printArr(a, 8);
 
 }
 
@@ -2016,24 +2020,87 @@ void testMinMaxSwitch(){
  * ② 56 ==> 65
  * ③ 432165 ==> 561234
  */
-void reverseArr2(int arr[],int start,int end){
-    for (int i = start; i <(end+start+1)/2 ; ++i) {
-        int temp=arr[i];
-        arr[i]=arr[end+start-i];
-        arr[end+start-i]=temp;
+/**
+ * 转置（翻转）数组
+ * @param arr 待处理数组
+ * @param start 起始下标（包括）
+ * @param end 结束下标（包括）
+ */
+void reverseArr2(int arr[], const int start, const int end) {
+    for (int i = start; i < (end + start + 1) / 2; ++i) {
+        int temp = arr[i];
+        arr[i] = arr[end + start - i];
+        arr[end + start - i] = temp;
     }
 }
-void loopMoveArr(int arr[],int n,int m){
-    reverseArr2(arr,0,n-m-1);
-    reverseArr2(arr,n-m,n-1);
-    reverseArr2(arr,0,n-1);
+
+/**
+ * 循环移动数组指定位数
+ * @param arr 待处理数组
+ * @param n 元素个数
+ * @param m 移动最后几位
+ */
+void loopMoveArr(int arr[], const int n, const int m) {
+    reverseArr2(arr, 0, n - m - 1);
+    reverseArr2(arr, n - m, n - 1);
+    reverseArr2(arr, 0, n - 1);
 }
 
-void testLoopMoveArr(){
-    int arr[]={1,2,3,4,5,6};
-    printArr(arr,6);
-    loopMoveArr(arr,6,2);
-    printArr(arr,6);
+void testLoopMoveArr() {
+    int arr[] = {1, 2, 3, 4, 5, 6};
+    printArr(arr, 6);
+    loopMoveArr(arr, 6, 2);
+    printArr(arr, 6);
+}
+
+/*
+ * 42、【题目】约瑟夫环
+ * 有n个人围成一圈，顺序排号。从第一个人开始报数（从1到3报数），凡报到3的人退出圈子，问最后留下的是原来第几号的那位。
+ */
+/**
+ * 约瑟夫环求生还者原始序号
+ * @param n 人数
+ * @param m 该死的数
+ * @return 生还者序号
+ */
+int JosephusProblem(const int n, const int m) {
+
+    bool p[n + 1];  //人映射到数组（序号对应下标，从下标1到n），true活，false死
+    for (int i = 0; i < n + 1; ++i) {   //开始所有人都活
+        p[i] = true;
+    }
+
+    int i = 1;      //遍历数组的下标，初始第一个人
+    int num=0;      //当前报数值，初始未开始报数
+    int last = 1;   //最后死的人的序号（下标），初始第一个人
+    int dead = 0;   //当前死亡人数，初始还没人死
+
+    while (dead < n) {  //没死完继续死
+        if (i > n) {    //下标溢出从头开始
+            i = 1;
+        }
+        if (p[i]) {             //这人没死
+            num++;              //就得报数
+            if (num == m){      //报到该死的数立马去死
+                p[i] = false;   //他死了
+                num=0;          //报数值清零
+                last = i;       //记录最后死的人是他
+                dead++;         //死亡人数加一
+            }
+        }
+        i++;        //下一个人
+    }
+
+    return last;    //返回最后死的人的序号
+}
+
+void testJosephusProblem(){
+    for (int i = 1; i < 10; ++i) {
+        int n=rand()%50+5;
+        int m=rand()%10+1;
+        printf("%3d,%3d : %3d\n",n,m,JosephusProblem(n,m));
+    }
+    printf("%3d,%3d : %3d\n",8,3,JosephusProblem(8,3));
 }
 
 
@@ -2125,10 +2192,10 @@ int main() {
     //testDayOfTheWeek();
     //testDeleteChar();
     //testSortTenNumber();
-     testMinMaxSwitch();
+    //testMinMaxSwitch();
     */
-    testLoopMoveArr();
-
+    //testLoopMoveArr();
+    testJosephusProblem();
 
 
     printf("\n运行耗时：");
