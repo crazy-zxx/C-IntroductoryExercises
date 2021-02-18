@@ -2007,18 +2007,34 @@ void testMinMaxSwitch(){
 }
 
 /*
- * 41、【题目】数组移位
+ * 41、【题目】数组循环移位
  * 有 n 个整数，使其前面各数顺序向后移 m 个位置，最后m个数变成最前面的 m 个数。
  * 实现原理：每部分各自转置再整体转置，或先整体转置再各部分转置
- * 例如：123456 ==> 561234
+ * 例如：1234 56 ==> 56 1234
  * 过程如下：
  * ① 1234 ==> 4321
  * ② 56 ==> 65
  * ③ 432165 ==> 561234
  */
+void reverseArr2(int arr[],int start,int end){
+    for (int i = start; i <(end+start+1)/2 ; ++i) {
+        int temp=arr[i];
+        arr[i]=arr[end+start-i];
+        arr[end+start-i]=temp;
+    }
+}
+void loopMoveArr(int arr[],int n,int m){
+    reverseArr2(arr,0,n-m-1);
+    reverseArr2(arr,n-m,n-1);
+    reverseArr2(arr,0,n-1);
+}
 
-
-
+void testLoopMoveArr(){
+    int arr[]={1,2,3,4,5,6};
+    printArr(arr,6);
+    loopMoveArr(arr,6,2);
+    printArr(arr,6);
+}
 
 
 int main() {
@@ -2109,10 +2125,13 @@ int main() {
     //testDayOfTheWeek();
     //testDeleteChar();
     //testSortTenNumber();
+     testMinMaxSwitch();
     */
-    testMinMaxSwitch();
+    testLoopMoveArr();
 
 
+
+    printf("\n运行耗时：");
     gettimeofday(&end, 0);
     double timeuse = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;    //微秒数
     timeuse /= 1000; //除以1000则进行毫秒计时，如果除以1000000则进行秒级别计时，如果除以1则进行微妙级别计时
