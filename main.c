@@ -2208,7 +2208,80 @@ void testConnectLinkedList() {
     printLinkedList(h1);
 }
 
+/*
+ * 45、【题目】函数指针
+ * 输入n为偶数时，调用函数求1/2+1/4+...+1/n,当输入n为奇数时，调用函数1/1+1/3+...+1/n(利用指针函数)
+ */
+double calcOdd(int n){
+    double sum=0.0;
+    for (int i = 2; i <= n; i+=2) {
+        sum+=1.0/i;
+    }
+    return sum;
+}
+double calcEven(int n){
+    double sum=0.0;
+    for (int i = 1; i <= n; i+=2) {
+        sum+=1.0/i;
+    }
+    return sum;
+}
+void calcOEFractionSum(int n){
+    double (*f)();
+    if (n%2){
+        f=calcEven;
+    } else{
+        f=calcOdd;
+    }
+    printf("%f\n",(*f)(n));
+}
 
+void testCalcOEFractionSum(){
+    for (int i = 1; i < 10; ++i) {
+        printf("%d : ",i);
+        calcOEFractionSum(i);
+    }
+}
+
+/*
+ * 46、【题目】
+ */
+
+/*
+ * 47、【题目】
+ */
+
+/*
+ * 48、【题目】
+ */
+
+/*
+ * 49、【题目】
+ */
+
+/*
+ * 50、【题目】
+ */
+
+/*
+ * 51、【题目】
+ */
+
+/*
+ * 52、【题目】
+ */
+
+/*
+ * 53、【题目】
+ */
+
+/*
+ * 54、【题目】
+ */
+
+/*
+ * 55、【题目】
+ */
 
 
 
@@ -2305,7 +2378,8 @@ int main() {
     //testLoopMoveArr();
     //testJosephusProblem();
     //testReversePrintLinkedList();
-    testConnectLinkedList();
+    //testConnectLinkedList();
+    testCalcOEFractionSum();
 
 
     printf("\n运行耗时：");
