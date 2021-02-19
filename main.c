@@ -2110,10 +2110,38 @@ void testJosephusProblem() {
 /*
  * 43、【题目】反向输出链表
  */
-typedef struct LNode{
+typedef struct Node{
     int          data;
     struct LNode *next;
 }LNode,*LinkList;
+/**
+ * 反向输出链表
+ * @param p 链表首节点（非头结点）指针
+ */
+void reversePrintLink(LinkList p){
+    if (p->next){
+        reversePrintLink(p->next);
+    }
+    printf("%d ",p->data);
+}
+
+void testReversePrintLink(){
+
+    LinkList head=(LinkList)malloc(sizeof(LNode)),r,temp;
+    head->next=NULL;
+    r=head;
+    printf("原始链表：");
+    for (int i = 0; i < 10; ++i) {
+        temp=(LinkList)malloc(sizeof(LNode));
+        temp->data=rand()%100;
+        temp->next=NULL;
+        r->next=temp;
+        r=temp;
+        printf("%d ",temp->data);
+    }
+    printf("\n链表逆序：");
+    reversePrintLink(head->next);
+}
 
 
 
@@ -2211,7 +2239,8 @@ int main() {
     //testMinMaxSwitch();
     */
     //testLoopMoveArr();
-    testJosephusProblem();
+    //testJosephusProblem();
+    testReversePrintLink();
 
 
     printf("\n运行耗时：");
