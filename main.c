@@ -2100,8 +2100,8 @@ int JosephusProblem(const int n, const int m) {
 
 void testJosephusProblem() {
     for (int i = 1; i < 10; ++i) {
-        int n = rand() % 50 ;
-        int m = rand() % 50 ;
+        int n = rand() % 50;
+        int m = rand() % 50;
         printf("%3d,%3d : %3d\n", n, m, JosephusProblem(n, m));
     }
     printf("%3d,%3d : %3d\n", 8, 3, JosephusProblem(8, 3));
@@ -2110,37 +2110,102 @@ void testJosephusProblem() {
 /*
  * 43、【题目】反向输出链表
  */
-typedef struct Node{
-    int          data;
+typedef struct Node {
+    int data;
     struct LNode *next;
-}LNode,*LinkList;
+} LNode, *LinkList;
+
 /**
  * 反向输出链表
  * @param p 链表首节点（非头结点）指针
  */
-void reversePrintLink(LinkList p){
-    if (p->next){
-        reversePrintLink(p->next);
+void reversePrintLinkedList(const LinkList const p) {
+    if (!p) {
+        return;
     }
-    printf("%d ",p->data);
+    if (p->next) {
+        reversePrintLinkedList(p->next);
+    }
+    printf("%d ", p->data);
 }
 
-void testReversePrintLink(){
-
-    LinkList head=(LinkList)malloc(sizeof(LNode)),r,temp;
-    head->next=NULL;
-    r=head;
+/**
+ * 创建链表
+ * @param h 指向链表头指针的指针
+ */
+void createLinkedList(LinkList *const h) {
+    if (!h) {
+        return;
+    }
+    *h = (LinkList) malloc(sizeof(LNode));
+    LinkList r, temp;
+    (*h)->next = NULL;
+    r = (*h);
     printf("原始链表：");
     for (int i = 0; i < 10; ++i) {
-        temp=(LinkList)malloc(sizeof(LNode));
-        temp->data=rand()%100;
-        temp->next=NULL;
-        r->next=temp;
-        r=temp;
-        printf("%d ",temp->data);
+        temp = (LinkList) malloc(sizeof(LNode));
+        temp->data = rand() % 100;
+        temp->next = NULL;
+        r->next = temp;
+        r = temp;
+        printf("%d ", temp->data);
     }
-    printf("\n链表逆序：");
-    reversePrintLink(head->next);
+    printf("\n");
+}
+
+void testReversePrintLinkedList() {
+
+    LinkList head;
+    createLinkedList(&head);
+    printf("链表逆序：");
+    reversePrintLinkedList(head->next);
+}
+
+/*
+ * 44、【题目】连接两个链表
+ */
+/**
+ * 连接两个链表（将h2连接到h1后）
+ * @param h1 链表头指针
+ * @param h2 链表头指针
+ */
+void connectLinkedList(const LinkList const h1, const LinkList const h2) {
+
+    if (!h1) {
+        return;
+    }
+
+    LinkList p = h1;
+    while (p->next) {
+        p = p->next;
+    }
+    p->next = h2->next;
+}
+
+/**
+ * 输出单链表
+ * @param h 链表头指针
+ */
+void printLinkedList(const LinkList const h) {
+    if (!h) {
+        return;
+    }
+
+    LinkList p = h->next;
+    while (p) {
+        printf("%d ", p->data);
+        p = p->next;
+    }
+}
+
+void testConnectLinkedList() {
+
+    LinkList h1, h2;
+    createLinkedList(&h1);
+    createLinkedList(&h2);
+    printf("\n链表连接：");
+    connectLinkedList(h1, h2);
+    printLinkedList(h1);
 }
 
 
@@ -2183,7 +2248,7 @@ int main() {
     struct timeval start, end;
     gettimeofday(&start, 0); //参数：接受时间的结构体，时区设置
 
-    /*
+
     //sleep(1);
 
     //testIsNarcissistic();
@@ -2237,10 +2302,10 @@ int main() {
     //testDeleteChar();
     //testSortTenNumber();
     //testMinMaxSwitch();
-    */
     //testLoopMoveArr();
     //testJosephusProblem();
-    testReversePrintLink();
+    //testReversePrintLinkedList();
+    testConnectLinkedList();
 
 
     printf("\n运行耗时：");
