@@ -2212,40 +2212,94 @@ void testConnectLinkedList() {
  * 45、【题目】函数指针
  * 输入n为偶数时，调用函数求1/2+1/4+...+1/n,当输入n为奇数时，调用函数1/1+1/3+...+1/n(利用指针函数)
  */
-double calcOdd(int n){
-    double sum=0.0;
-    for (int i = 2; i <= n; i+=2) {
-        sum+=1.0/i;
+double calcOdd(int n) {
+    double sum = 0.0;
+    for (int i = 2; i <= n; i += 2) {
+        sum += 1.0 / i;
     }
     return sum;
-}
-double calcEven(int n){
-    double sum=0.0;
-    for (int i = 1; i <= n; i+=2) {
-        sum+=1.0/i;
-    }
-    return sum;
-}
-void calcOEFractionSum(int n){
-    double (*f)();
-    if (n%2){
-        f=calcEven;
-    } else{
-        f=calcOdd;
-    }
-    printf("%f\n",(*f)(n));
 }
 
-void testCalcOEFractionSum(){
+double calcEven(int n) {
+    double sum = 0.0;
+    for (int i = 1; i <= n; i += 2) {
+        sum += 1.0 / i;
+    }
+    return sum;
+}
+
+void calcOEFractionSum(int n) {
+    double (*f)();
+    if (n % 2) {
+        f = calcEven;
+    } else {
+        f = calcOdd;
+    }
+    printf("%f\n", (*f)(n));
+}
+
+void testCalcOEFractionSum() {
     for (int i = 1; i < 10; ++i) {
-        printf("%d : ",i);
+        printf("%d : ", i);
         calcOEFractionSum(i);
     }
 }
 
 /*
- * 46、【题目】
+ * 46、【题目】字符串排序
  */
+/**
+ * 字符串排序（按照ANSII码序）
+ * @param str 字符串数组
+ * @param n 字符串个数
+ */
+void sortStr(const char *str[], const int n) {
+
+    for (int i = 0; i < n; ++i) {
+        bool flag = true;
+        for (int j = 0; j < n - 1 - i; ++j) {
+            if (strcmp(str[j], str[j + 1]) > 0) {
+                char *temp = str[j];
+                str[j] = str[j + 1];
+                str[j + 1] = temp;
+                flag = false;
+            }
+        }
+        if (flag) {
+            return;
+        }
+    }
+}
+/**
+ * 输出字符串数组
+ * @param str 字符串数组
+ * @param n 字符串个数
+ */
+void printStrArr(const char *const str[], const int n) {
+    for (int i = 0; i < n; ++i) {
+        printf("\"");
+        printf("%s\"\n", str[i]);
+    }
+    printf("\n");
+}
+
+void testSortStr() {
+
+    char *str[] = {
+            "abcde",
+            "abcd",
+            "adcd",
+            "djhjgfhj",
+            "fdfd",
+            "andjfkjfd",
+            "fhohe",
+            ""
+    };
+    int n = 8;
+    printStrArr(str, n);
+    sortStr(str, n);
+    printStrArr(str, n);
+}
 
 /*
  * 47、【题目】
@@ -2379,8 +2433,8 @@ int main() {
     //testJosephusProblem();
     //testReversePrintLinkedList();
     //testConnectLinkedList();
-    testCalcOEFractionSum();
-
+    //testCalcOEFractionSum();
+    testSortStr();
 
     printf("\n运行耗时：");
     gettimeofday(&end, 0);
