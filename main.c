@@ -2499,8 +2499,30 @@ void testDecimalToOther() {
 }
 
 /*
- * 50、【题目】
+ * 50、【题目】一个偶数总能表示为两个素数之和
  */
+/**
+ * 一偶数分解为两素数和
+ * @param x 待分解偶数
+ */
+void resolveEvenTwoPrime(const int x){
+
+    if (x<=2){
+        printf("error!\n");
+    }
+    for (int i = 2; i <= x/2; ++i) {
+        if (isPrime(i) && isPrime(x-i)){
+            printf("%d+%d=%d\n",i,x-i,x);
+            break;
+        }
+    }
+}
+
+void testResolveEvenTwoPrime(){
+    for (int i = 2; i <= 100; i+=2) {
+        resolveEvenTwoPrime(i);
+    }
+}
 
 /*
  * 51、【题目】
@@ -2624,8 +2646,10 @@ int main() {
     //testMonkeyDividePeach2();
     //testMonkeyDividePeach3();
     //testFindDoubleDigit();
-    testOtherToDecimal();
-    testDecimalToOther();
+    //testOtherToDecimal();
+    //testDecimalToOther();
+    testResolveEvenTwoPrime();
+
 
 
     printf("\n运行耗时：");
