@@ -2255,9 +2255,9 @@ void testCalcOEFractionSum() {
  */
 void sortStr(const char *str[], const int n) {
 
-    for (int i = 0; i < n; ++i) {
+    for (int i = 1; i < n; ++i) {   //冒泡思想
         bool flag = true;
-        for (int j = 0; j < n - 1 - i; ++j) {
+        for (int j = 0; j < n - i; ++j) {
             if (strcmp(str[j], str[j + 1]) > 0) {
                 char *temp = str[j];
                 str[j] = str[j + 1];
@@ -2270,6 +2270,7 @@ void sortStr(const char *str[], const int n) {
         }
     }
 }
+
 /**
  * 输出字符串数组
  * @param str 字符串数组
@@ -2302,8 +2303,109 @@ void testSortStr() {
 }
 
 /*
- * 47、【题目】
+ * 47、【题目】猴子分桃
+ * 海滩上有一堆桃子，五只猴子来分。
+ * 第一只猴子把这堆桃子平均分为五份，多了一个，这只猴子把多的一个扔入海中，拿走了一份。
+ * 第二只猴子把剩下的桃子又平均分成五份，又多了一个，它同样把多的一个扔入海中，拿走了一份。
+ * 第三、第四、第五只猴子都是这样做的，问海滩上原来最少有多少个桃子？
  */
+/**
+ * 猴子分桃,最少有多少个桃子(推导公式计算)
+ * @param n 猴子数目
+ * @param m 分的份数
+ */
+void monkeyDividePeach(const int n, const int m) {
+
+    long double a = pow(m, n);
+    long double b = pow(m - 1, n - 1);
+    for (int i = 1; i < INT32_MAX; ++i) {
+        long double c = a * (i + 1), temp;
+        if (fmodl(c, b) == 0 && (temp = c / b - m + 1) > 0) {
+            printf("%.0Lf\n", temp);
+            break;
+        }
+    }
+}
+
+void testMonkeyDividePeach() {
+    //monkeyDividePeach(12, 8);
+    monkeyDividePeach(5, 5);
+    //for (int i = 0; i < 10; ++i) {
+    //    int n=rand()%10+1;
+    //    int m=rand()%10+2;
+    //    printf("\n%d,%d:\n",n,m);
+    //    monkeyDividePeach(n,m);
+    //}
+}
+
+/**
+ * 猴子分桃，最少有多少个桃子（递归筛选数值）
+ * @param num 判断该数值是否成立
+ * @param n 猴子数目
+ * @param m 份数
+ * @return bool型：是true，否false
+ */
+bool monkeyDividePeach2(const int num, const int n, const int m) {
+    if (n == 0) {
+        return true;
+    } else if (num % m != 1) {  //不能继续满足条件
+        return false;
+    } else {    //满足条件
+        return monkeyDividePeach2(num - num / m - 1, n - 1, m);
+    }
+}
+
+void testMonkeyDividePeach2() {
+
+    for (int i = 1; i < INT32_MAX; ++i) {
+        if (monkeyDividePeach2(i, 5, 5)) {
+            printf("%d\n", i);
+            break;
+        }
+    }
+    //for (int i = 0; i < 10; ++i) {
+    //    int n=rand()%10+1;
+    //    int m=rand()%10+2;
+    //    for (int i = 1; i < INT32_MAX; ++i) {
+    //        if (monkeyDividePeach2(i,n,m)){
+    //            printf("\n%d,%d:\n",n,m);
+    //            printf("%d\n",i);
+    //            break;
+    //        }
+    //    }
+    //}
+}
+
+/**
+ * 五猴分桃，最少桃数
+ */
+void monkeyDividePeach3() {
+
+    int i = 0;  //循环次数
+    int j = 1;  //第五只猴子分的桃子
+    int x;      //桃子数
+    while (i < 5) {
+        x = 4 * j;
+        //printf("第五只猴子分得桃子为%d个时,剩余桃子数为%d\n",j,x);
+        for (i = 0; i < 5;) {
+            if (x % 4 != 0) {   //必须连续五次x都能被4整除才符合条件.
+                break;
+            } else {
+                x = (x / 4) * 5 + 1;
+                //printf("第五只猴子分得桃子为%d个时,剩余桃子数为%d\n",j,x);
+                i++;
+            }
+        }
+
+        j++;
+    }
+
+    printf("最少有 %d 个", x);
+}
+
+void testMonkeyDividePeach3() {
+    monkeyDividePeach3();
+}
 
 /*
  * 48、【题目】
@@ -2434,7 +2536,11 @@ int main() {
     //testReversePrintLinkedList();
     //testConnectLinkedList();
     //testCalcOEFractionSum();
-    testSortStr();
+    //testSortStr();
+    //testMonkeyDividePeach();
+    //testMonkeyDividePeach2();
+    testMonkeyDividePeach3();
+
 
     printf("\n运行耗时：");
     gettimeofday(&end, 0);
