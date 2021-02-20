@@ -2386,17 +2386,14 @@ void monkeyDividePeach3() {
     int x;      //桃子数
     while (i < 5) {
         x = 4 * j;
-        //printf("第五只猴子分得桃子为%d个时,剩余桃子数为%d\n",j,x);
         for (i = 0; i < 5;) {
             if (x % 4 != 0) {   //必须连续五次x都能被4整除才符合条件.
                 break;
             } else {
                 x = (x / 4) * 5 + 1;
-                //printf("第五只猴子分得桃子为%d个时,剩余桃子数为%d\n",j,x);
                 i++;
             }
         }
-
         j++;
     }
 
