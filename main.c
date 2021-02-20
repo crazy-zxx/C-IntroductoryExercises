@@ -2376,6 +2376,7 @@ void testMonkeyDividePeach2() {
     //}
 }
 
+//TODO 需要理解
 /**
  * 五猴分桃，最少桃数
  */
@@ -2405,12 +2406,97 @@ void testMonkeyDividePeach3() {
 }
 
 /*
- * 48、【题目】
+ * 48、【题目】求两位数
+ * 809*??=800*??+9*??
+ * 其中??代表两位数。
+ * 809*??结果为四位数，8*??结果为两位数，9*??结果为3位数。
+ * 求??代表的两位数，及809*??后的结果？
  */
+/**
+ * 求满足条件的两位数
+ * @return 满足要求的两位数
+ */
+int findDoubleDigit() {
+
+    for (int i = 10; i < 100; ++i) {
+        int a = 809 * i;
+        int b = 8 * i;
+        int c = 9 * i;
+        if (a > 999 & a < 10000 && b > 9 && b < 100 && c > 99 && c < 1000 && a == b * 100 + c) {
+            return i;
+        }
+    }
+}
+
+void testFindDoubleDigit() {
+    int x = findDoubleDigit();
+    printf("809*%d=800*%d+9*%d", x, x, x);
+}
 
 /*
- * 49、【题目】
+ * 49、【题目】整数进制转换
  */
+/**
+ * 其他进制整数转十进制整数
+ * @param str 其他进制数值（字符串形式,不要带前缀0或0x）
+ * @param base 目标进制
+ * @return 对应十进制数
+ */
+long long otherToDecimal(const char *str, const int base) {
+
+    int len = strlen(str);
+    long long sum = 0LL;
+    for (int i = len - 1; i >= 0; --i) {    //加权求和
+        if (isdigit(str[i])) {
+            sum += (str[i] - '0') * (long long) pow(base, len - 1 - i);
+        } else if (isalpha(str[i])) {
+            sum += (tolower(str[i]) - 'a' + 10) * (long long) pow(base, len - 1 - i);
+        }
+    }
+    return sum;
+}
+void testOtherToDecimal() {
+    printf("b%s: %lld\n", "1001001", otherToDecimal("1001001", 2));
+    printf("0%s: %lld\n", "16", otherToDecimal("16", 8));
+    printf("0x%s: %lld\n", "ffff", otherToDecimal("ffff", 16));
+}
+
+/**
+ * 十进制整数转其他进制整数
+ * @param x 十进制数值
+ * @param base 目标进制
+ * @return 对应的指定进制数值（不带前缀0或0x）
+ */
+char *decimalToOther(const int x, const int base) {
+    char *result = (char *) malloc(sizeof(char) * 1024);
+    int t = x, i = 0;
+    while (t) {     //除基取余
+        int m = t % base;
+        if (m >= 0 && m <= 9) {
+            result[i++] = m + '0';
+        } else if (m >= 10 && m <= 35) {
+            result[i++] = m - 10 + 'a';
+        }
+        t /= base;
+    }
+    result[i] = '\0';
+
+    for (int j = 0; j < i / 2; ++j) {   //翻转
+        int temp = result[j];
+        result[j] = result[i - 1 - j];
+        result[i - 1 - j] = temp;
+    }
+    return result;
+}
+void testDecimalToOther() {
+    char *s = decimalToOther(10,2);
+    printf("%d: b%s\n", 10, s);
+    s=decimalToOther(10,8);
+    printf("%d: 0%s\n", 10, s);
+    s=decimalToOther(10,16);
+    printf("%d: 0x%s\n", 10, s);
+    free(s);
+}
 
 /*
  * 50、【题目】
@@ -2536,7 +2622,10 @@ int main() {
     //testSortStr();
     //testMonkeyDividePeach();
     //testMonkeyDividePeach2();
-    testMonkeyDividePeach3();
+    //testMonkeyDividePeach3();
+    //testFindDoubleDigit();
+    testOtherToDecimal();
+    testDecimalToOther();
 
 
     printf("\n运行耗时：");
