@@ -2683,11 +2683,43 @@ void guessNumber() {
 /*
  * 55、【题目】计算字符串中子串出现的次数
  */
+/**
+ * 计算字符串中子串出现的次数
+ * @param str 目标字符串
+ * @param substr 子串
+ * @return 次数
+ */
 int substrTimes(const char *str,const char *substr){
     int count=0;
-
-
+    int lenS=strlen(str),lenSub=strlen(substr);
+    for (int i = 0; i <= lenS-lenSub; ++i) {
+        if (str[i]==substr[0]){
+            int j=1;
+            while (j<lenSub && str[i+j]==substr[j]){
+                j++;
+            }
+            if (j==lenSub){
+                count++;
+            }
+        }
+    }
+    return count;
 }
+
+void testSubstrTimes(){
+    printf("%s contain %s: %d\n","aaaa","a",substrTimes("aaaa","a"));
+    printf("%s contain %s: %d\n","aaaa","aa",substrTimes("aaaa","aa"));
+    printf("%s contain %s: %d\n","aaaa","aaa",substrTimes("aaaa","aaa"));
+    printf("%s contain %s: %d\n","aaaa","aaaa",substrTimes("aaaa","aaaa"));
+    printf("%s contain %s: %d\n","abaa","ab",substrTimes("abaa","ab"));
+    printf("%s contain %s: %d\n","abababa","a",substrTimes("abababa","aba"));
+    printf("%s contain %s: %d\n","abababa","ab",substrTimes("abababa","ab"));
+    printf("%s contain %s: %d\n","abababa","t",substrTimes("abababa","t"));
+}
+
+/*
+ * 56、【题目】
+ */
 
 
 
@@ -2797,7 +2829,8 @@ int main() {
     //testConnectStr();
     //testEncryptTelegram();
     //testTime();
-    guessNumber();
+    //guessNumber();
+    testSubstrTimes();
 
 
     printf("\n运行耗时：");
