@@ -2455,6 +2455,7 @@ long long otherToDecimal(const char *str, const int base) {
     }
     return sum;
 }
+
 void testOtherToDecimal() {
     printf("b%s: %lld\n", "1001001", otherToDecimal("1001001", 2));
     printf("0%s: %lld\n", "16", otherToDecimal("16", 8));
@@ -2488,12 +2489,13 @@ char *decimalToOther(const int x, const int base) {
     }
     return result;
 }
+
 void testDecimalToOther() {
-    char *s = decimalToOther(10,2);
+    char *s = decimalToOther(10, 2);
     printf("%d: b%s\n", 10, s);
-    s=decimalToOther(10,8);
+    s = decimalToOther(10, 8);
     printf("%d: 0%s\n", 10, s);
-    s=decimalToOther(10,16);
+    s = decimalToOther(10, 16);
     printf("%d: 0x%s\n", 10, s);
     free(s);
 }
@@ -2505,44 +2507,187 @@ void testDecimalToOther() {
  * 一偶数分解为两素数和
  * @param x 待分解偶数
  */
-void resolveEvenTwoPrime(const int x){
+void resolveEvenTwoPrime(const int x) {
 
-    if (x<=2){
+    if (x <= 2) {
         printf("error!\n");
     }
-    for (int i = 2; i <= x/2; ++i) {
-        if (isPrime(i) && isPrime(x-i)){
-            printf("%d+%d=%d\n",i,x-i,x);
+    for (int i = 2; i <= x / 2; ++i) {
+        if (isPrime(i) && isPrime(x - i)) {
+            printf("%d+%d=%d\n", i, x - i, x);
             break;
         }
     }
 }
 
-void testResolveEvenTwoPrime(){
-    for (int i = 2; i <= 100; i+=2) {
+void testResolveEvenTwoPrime() {
+    for (int i = 2; i <= 100; i += 2) {
         resolveEvenTwoPrime(i);
     }
 }
 
 /*
- * 51、【题目】
+ * 51、【题目】连接两个字符串
  */
+/**
+ * 连接两个字符串
+ * @param target 目标字符串
+ * @param source 源字符串
+ * @return 连接后的字符串
+ */
+char *connectStr(char *target, const char *source) {
+    if (!target || !source) {
+        return target;
+    }
+
+    int lenT = strlen(target), lenS = strlen(source);
+    char *temp = (char *) malloc(sizeof(char) * (lenT + lenS + 1));
+    for (int i = 0; i < lenT; ++i) {
+        temp[i] = target[i];
+    }
+    for (int i = 0; i <= lenS; ++i) {
+        temp[lenT + i] = source[i];
+    }
+    target = temp;    //修改原目标字符串
+
+    return target;
+}
+
+void testConnectStr() {
+    char t[1024] = "abcd";
+    char *s = "efg";
+    puts(connectStr(t, s));
+}
 
 /*
- * 52、【题目】
+ * 52、【题目】加密电话
+ * 某个公司采用公用电话传递数据，数据是四位的整数，在传递过程中是加密的，加密规则如下：
+ * 每位数字都加上5,然后用和除以10的余数代替该数字，再将第一位和第四位交换，第二位和第三位交换。
  */
+void encryptTelegram(int data) {
+    int result[5] = {0};
+    int i = 0;
+    while (data) {
+        result[i++] = (data % 10 + 5) % 10;
+        data /= 10;
+    }
+
+    for (int j = 0; j < i; ++j) {
+        printf("%d", result[j]);
+    }
+    printf("\n");
+}
+
+void testEncryptTelegram() {
+    for (int i = 1000; i < 1100; ++i) {
+        printf("%d: ", i);
+        encryptTelegram(i);
+    }
+    printf("%d: ", 1234);
+    encryptTelegram(1234);
+}
 
 /*
- * 53、【题目】
+ * 53、【题目】时间函数使用
  */
+void testTime() {
+    time_t rawtime;
+    struct tm *timeinfo;
+
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+    printf("当前本地时间为: %s", asctime(timeinfo));
+}
 
 /*
- * 54、【题目】
+ * 54、【题目】猜数游戏
  */
+/**
+ * 猜数字游戏
+ */
+void guessNumber() {
+    int n;
+    char begin;
+    int count = 1;
+    srand((int) time(NULL));
+    int m = (rand() % 100) + 1;
+    puts("游戏开始，请输入数字:");
+    while (1) {
+        scanf("%d", &n);
+        if (n == m) {
+            printf("猜中了，使用了 %d 次！\n", count);
+            if (count == 1) {
+                printf("你是神级人物了！膜拜\n");
+                getchar();
+                printf("你已经达到最高级别，还需要玩吗？Y/N \n");
+                scanf("%c", &begin);
+                if (begin == 'Y' || begin == 'y')      //重复玩的一个嵌套循环
+                {
+                    guessNumber();
+                } else {
+                    printf("谢谢，再见!\n");
+                }
+            } else if (count <= 5) {
+                printf("你是王级人物了！非常赞\n");
+                getchar();
+                printf("需要挑战最高级别不？Y/N \n");
+                scanf("%c", &begin);
+                if (begin == 'Y' || begin == 'y') {
+                    guessNumber();
+                } else {
+                    printf("谢谢，再见!\n");
+                }
+            } else if (count <= 10) {
+                printf("你是大师级人物了！狂赞\n");
+                getchar();
+                printf("需要挑战最高级别不？Y/N \n");
+                scanf("%c", &begin);
+                if (begin == 'Y' || begin == 'y') {
+                    guessNumber();
+                } else {
+                    printf("谢谢，再见!\n");
+                }
+            } else if (count <= 15) {
+                printf("你是钻石级人物了！怒赞\n");
+                getchar();
+                printf("需要挑战最高级别不？Y/N \n");
+                scanf("%c", &begin);
+                if (begin == 'Y' || begin == 'y') {
+                    guessNumber();
+                } else {
+                    printf("谢谢，再见!\n");
+                }
+            } else {
+                getchar();
+                printf("你的技术还有待提高哦！重玩？ Y/N\n");
+                scanf("%c", &begin);
+                if (begin == 'Y' || begin == 'y') {
+                    guessNumber();
+                } else {
+                    printf("谢谢，再见!\n");
+                }
+            }
+            break;
+        } else if (n < m) {
+            puts("太小了!");
+            puts("重新输入:");
+        } else {
+            puts("太大了!");
+            puts("重新输入:");
+        }
+        count++;//计数器
+    }
+}
+
 
 /*
- * 55、【题目】
+ * 55、【题目】计算字符串中子串出现的次数
  */
+int substrTimes(const char *str,const char *substr){
+    int count=0;
+
+
+}
 
 
 
@@ -2648,8 +2793,11 @@ int main() {
     //testFindDoubleDigit();
     //testOtherToDecimal();
     //testDecimalToOther();
-    testResolveEvenTwoPrime();
-
+    //testResolveEvenTwoPrime();
+    //testConnectStr();
+    //testEncryptTelegram();
+    //testTime();
+    guessNumber();
 
 
     printf("\n运行耗时：");
