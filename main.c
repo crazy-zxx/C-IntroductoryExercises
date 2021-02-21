@@ -2728,7 +2728,9 @@ typedef struct{
     int avargrade;
     char name[20];
 }Stu;
-
+/**
+ * 结构体信息保存到文件
+ */
 void testWriteFile(){
     FILE*fp;
     Stu stu[3];
