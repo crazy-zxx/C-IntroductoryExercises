@@ -2748,8 +2748,7 @@ void testWriteFile(){
         exit(0);
     }
     for(i=0;i<3;i++)
-        fprintf(fp,"%d %s %d %d %d %d\n",stu[i].ID,stu[i].name,stu[i].math,stu[i].English,
-                stu[i].C,stu[i].avargrade);
+        fprintf(fp,"%d %s %d %d %d %d\n",stu[i].ID,stu[i].name,stu[i].math,stu[i].English,stu[i].C,stu[i].avargrade);
 
     fclose(fp);
 }
