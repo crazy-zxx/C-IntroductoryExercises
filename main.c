@@ -2718,7 +2718,7 @@ void testSubstrTimes(){
 }
 
 /*
- * 56、【题目】
+ * 56、【题目】结构体信息保存到文件
  */
 typedef struct{
     int ID;
