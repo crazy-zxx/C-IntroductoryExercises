@@ -781,7 +781,7 @@ void printRhombus(int l) {
     //调整数目
     asterisk = l - 2;
     blank = 1;
-    for (int i = l / 2; i >= 0; --i) {    //后一半减一行
+    for (int i = l / 2; i >= 1; --i) {    //后一半减一行
         for (int j = 1; j <= blank; ++j) {
             printf(" ");
         }
@@ -1371,7 +1371,7 @@ void testIsLeapYear() {
  * @param n 行数
  */
 void printYHTriangle(const int n) {
-    if (n <= 0) {
+    if (n <= 0 || n > 99) {
         printf("Error!\n");
         return;
     }
@@ -2689,16 +2689,16 @@ void guessNumber() {
  * @param substr 子串
  * @return 次数
  */
-int substrTimes(const char *str,const char *substr){
-    int count=0;
-    int lenS=strlen(str),lenSub=strlen(substr);
-    for (int i = 0; i <= lenS-lenSub; ++i) {
-        if (str[i]==substr[0]){
-            int j=1;
-            while (j<lenSub && str[i+j]==substr[j]){
+int substrTimes(const char *str, const char *substr) {
+    int count = 0;
+    int lenS = strlen(str), lenSub = strlen(substr);
+    for (int i = 0; i <= lenS - lenSub; ++i) {
+        if (str[i] == substr[0]) {
+            int j = 1;
+            while (j < lenSub && str[i + j] == substr[j]) {
                 j++;
             }
-            if (j==lenSub){
+            if (j == lenSub) {
                 count++;
             }
         }
@@ -2706,53 +2706,52 @@ int substrTimes(const char *str,const char *substr){
     return count;
 }
 
-void testSubstrTimes(){
-    printf("%s contain %s: %d\n","aaaa","a",substrTimes("aaaa","a"));
-    printf("%s contain %s: %d\n","aaaa","aa",substrTimes("aaaa","aa"));
-    printf("%s contain %s: %d\n","aaaa","aaa",substrTimes("aaaa","aaa"));
-    printf("%s contain %s: %d\n","aaaa","aaaa",substrTimes("aaaa","aaaa"));
-    printf("%s contain %s: %d\n","abaa","ab",substrTimes("abaa","ab"));
-    printf("%s contain %s: %d\n","abababa","a",substrTimes("abababa","aba"));
-    printf("%s contain %s: %d\n","abababa","ab",substrTimes("abababa","ab"));
-    printf("%s contain %s: %d\n","abababa","t",substrTimes("abababa","t"));
+void testSubstrTimes() {
+    printf("%s contain %s: %d\n", "aaaa", "a", substrTimes("aaaa", "a"));
+    printf("%s contain %s: %d\n", "aaaa", "aa", substrTimes("aaaa", "aa"));
+    printf("%s contain %s: %d\n", "aaaa", "aaa", substrTimes("aaaa", "aaa"));
+    printf("%s contain %s: %d\n", "aaaa", "aaaa", substrTimes("aaaa", "aaaa"));
+    printf("%s contain %s: %d\n", "abaa", "ab", substrTimes("abaa", "ab"));
+    printf("%s contain %s: %d\n", "abababa", "a", substrTimes("abababa", "aba"));
+    printf("%s contain %s: %d\n", "abababa", "ab", substrTimes("abababa", "ab"));
+    printf("%s contain %s: %d\n", "abababa", "t", substrTimes("abababa", "t"));
 }
 
 /*
  * 56、【题目】结构体信息保存到文件
  */
-typedef struct{
+typedef struct {
     int ID;
     int math;
     int English;
     int C;
     int avargrade;
     char name[20];
-}Stu;
+} Stu;
+
 /**
  * 结构体信息保存到文件
  */
-void testWriteFile(){
-    FILE*fp;
+void testWriteFile() {
+    FILE *fp;
     Stu stu[3];
-    int i,avargrade=0;
+    int i, avargrade = 0;
     printf("请输入3个同学的信息：学生号，姓名，3门成绩:\n");
-    for(i=0;i<3;i++)
-    {
-        scanf("%d %s %d %d %d",&(stu[i].ID),stu[i].name,&(stu[i].math),&(stu[i].English),&(stu[i].C));
-        stu[i].avargrade=(stu[i].math+stu[i].English+stu[i].C)/3;
+    for (i = 0; i < 3; i++) {
+        scanf("%d %s %d %d %d", &(stu[i].ID), stu[i].name, &(stu[i].math), &(stu[i].English), &(stu[i].C));
+        stu[i].avargrade = (stu[i].math + stu[i].English + stu[i].C) / 3;
     }
 
-    if((fp=fopen("stud.txt","w"))==NULL)
-    {
+    if ((fp = fopen("stud.txt", "w")) == NULL) {
         printf("error :cannot open file!\n");
         exit(0);
     }
-    for(i=0;i<3;i++)
-        fprintf(fp,"%d %s %d %d %d %d\n",stu[i].ID,stu[i].name,stu[i].math,stu[i].English,stu[i].C,stu[i].avargrade);
+    for (i = 0; i < 3; i++)
+        fprintf(fp, "%d %s %d %d %d %d\n", stu[i].ID, stu[i].name, stu[i].math, stu[i].English, stu[i].C,
+                stu[i].avargrade);
 
     fclose(fp);
 }
-
 
 
 int main() {
@@ -2813,7 +2812,7 @@ int main() {
     //testNotRepeatThreeDigitsSimple();
     //testNotRepeatThreeDigits();
     //testPrintMultiplicationTable();
-    //testPrintRhombus();
+    testPrintRhombus();
     //testPrintChessBoard();
     //testCalcCountOfStr();
     //testFractionSum();
@@ -2862,7 +2861,7 @@ int main() {
     //testTime();
     //guessNumber();
     //testSubstrTimes();
-    testWriteFile();
+    // testWriteFile();
 
 
     printf("\n运行耗时：");
