@@ -267,10 +267,10 @@ void testCountPrime() {
  */
 /**
  * 埃氏筛法求素数
- * @param result 接受素数结果的数组
+ * @param prime 接受素数结果的数组
  * @param p 筛选素数的辅助数组
  * @param n 范围上限（ (2，n] ）
- * @param len 素数个数
+ * @param count 素数个数
  */
 void sieve(int prime[], bool p[], const int n, int *const restrict count) {
     *count = 0;   //初始素数个数为0
@@ -319,7 +319,7 @@ void testSieve() {
  * @param n 待分解数字
  */
 void primeFactorsSimple(const int n) {
-    if (n <= 1) {
+    if (n < 2 || isPrime(n)) {
         printf("%d=can't resolve!\n", n);
         return;
     }
@@ -341,7 +341,7 @@ void primeFactorsSimple(const int n) {
 }
 
 void testPrimeFactorsSimple() {
-    for (int i = 1; i <= 10000; ++i) {
+    for (int i = 0; i <= 10000; ++i) {
         primeFactorsSimple(i);
     }
 }
@@ -353,66 +353,54 @@ void testPrimeFactorsSimple() {
  * @param prime 质数表
  * @param n 待分解数字
  */
-void primeFactors(int result[][2], int *restrict count, const int prime[], const int n) {
+void primeFactors(int n) {
+
+    const int max = 102400;   //质数查找范围上限大小
+    static int prime[max / 2] = {0};   //质数表
+    int countP = 0;            //质数个数
+    static int p[max] = {0};   //辅助数组，p[i]==0 则i为质数，反之非质数
+
+    sieve(prime, p, max, &countP); //先获取质数表
+
+    //数值校验
+    if (n < 2 || n >= max || !p[n]) {
+        printf("%d can't resolve!\n", n);
+        return;
+    }
 
     int temp = n;
     int sqrt_n = sqrt(n);
-    *count = 0;
-
-    for (int i = 0; prime[i] <= sqrt_n; ++i) {  //遍历质数表，只需遍历到待分解数的平方根
-
-        if (temp % prime[i] == 0) { //可整除的某一质数
-            result[*count][0] = prime[i];
-            result[*count][1] = 0;
-            while (temp % prime[i] == 0) {//计数可整除的某同一质数个数
-                result[*count][1]++;
+    printf("%d = ", n);
+    //分解质因数
+    //遍历质数表，只需遍历到待分解数的平方根
+    for (int i = 0; prime[i] <= sqrt_n; ++i) {
+        if (temp % prime[i] == 0) {         //可整除的某一质数
+            while (temp % prime[i] == 0) {  //输出完可整除的某同一质数
+                printf("%d", prime[i]);
                 temp /= prime[i];
-            }
-            (*count)++; //该质数不可继续整除，质因子个数加一
-        }
 
-        if (temp == 1) {    //若已经分解到1，则分解结束
-            break;
+                if (temp == 1) { //已经分解到1，结束
+                    printf("\n");
+                    return;
+                } else {        //尚可继续分解
+                    printf("*");
+                }
+            }
         }
     }
 
-    //待分解数的开方值及之前的质数尚未将其分解完，则分解到最后(非1非自身)的数即是最后一个质因子
+    //待分解数的开方值及之前的质数尚未将其分解完，
+    //则分解到最后(非1非自身)的数即是最后一个质因子
     if (temp != 1 && temp != n) {
-        result[*count][0] = temp;
-        result[*count][1] = 1;
-        (*count)++;
+        printf("%d\n", temp);
     }
 
 }
 
 void testPrimeFactors() {
-    const int max = 10240;   //数组大小
-    static int prime[max / 2] = {0};   //保存素数结果数组
-    static bool p[max] = {0};   //p[i]==false 则i为素数，反之非素数
-    int countP = 0, countF = 0;  //素数个数
-    int result[10][2] = {0};    //int范围不同因子个数不会超过10个（2*3*5*...*29 > int）
 
-    sieve(prime, p, 1000, &countP); //先获取质数表
-
-    for (int i = 1; i <= 10000; ++i) {
-        primeFactors(result, &countF, prime, i);    //分解
-        if (countF > 0) {
-            printf("%d=", i);
-            for (int j = 0; j < countF; ++j) {
-                while (result[j][1]-- > 0) {
-                    printf("%d", result[j][0]);
-                    if (result[j][1] > 0) {
-                        printf("*");
-                    }
-                }
-                if (j < countF - 1) {
-                    printf("*");
-                }
-            }
-        } else {
-            printf("%d can't resolve!", i);
-        }
-        printf("\n");
+    for (int i = 1; i <= 1000; ++i) {
+        primeFactors(i);
     }
 }
 
@@ -2801,7 +2789,7 @@ int main() {
     //testCountPrime();
     //testSieve();
     //testPrimeFactorsSimple();
-    //testPrimeFactors();
+    testPrimeFactors();
     //testPerfectNumber();
     //testFindPerfectNumber();
     //testGCDLCM();
@@ -2812,7 +2800,7 @@ int main() {
     //testNotRepeatThreeDigitsSimple();
     //testNotRepeatThreeDigits();
     //testPrintMultiplicationTable();
-    testPrintRhombus();
+    // testPrintRhombus();
     //testPrintChessBoard();
     //testCalcCountOfStr();
     //testFractionSum();
